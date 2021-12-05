@@ -1,22 +1,24 @@
+# frozen_string_literal: true
+
+# Controller for CRUD actions on Article class
 class ArticlesController < ApplicationController
-  before_action :set_article, only: %i[ show update destroy ]
+  before_action :set_article, only: %i[update destroy]
+  before_action :find_article, only: %i[show]
 
-  # GET /articles
-  # GET /articles.json
   def index
-    @articles = Article.all
+    req = Article.all.select ArticlesRepository::INDEX_FIELDS
+    req = req.limit index_params[:limit].to_i if index_params[:limit]
+    req = req.offset index_params[:page].to_i if index_params[:page]
+    res = req.order created_at: :desc
+    render json: res, status: :ok
   end
 
-  # GET /articles/1
-  # GET /articles/1.json
   def show
+    render json: @article.as_json(only: ArticlesRepository::SHOW_FIELDS), status: :ok
   end
 
-  # POST /articles
-  # POST /articles.json
   def create
     @article = Article.new(article_params)
-
     if @article.save
       render :show, status: :created, location: @article
     else
@@ -24,8 +26,6 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /articles/1
-  # PATCH/PUT /articles/1.json
   def update
     if @article.update(article_params)
       render :show, status: :ok, location: @article
@@ -34,20 +34,30 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # DELETE /articles/1
-  # DELETE /articles/1.json
   def destroy
     @article.destroy
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_article
-      @article = Article.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def article_params
-      params.require(:article).permit(:title, :body)
-    end
+  def set_article
+    @article = Article.where(id: params[:id]).first
+  end
+
+  def article_params
+    params.require(:article).permit ArticlesRepository::UPDATE_PARAMS
+  end
+
+  def index_params
+    params.permit ArticlesRepository::INDEX_PARAMS
+  end
+
+  def show_params
+    params.permit(:id)
+  end
+
+  def find_article
+    @article = Article.find(show_params[:id])
+    head(:not_found) unless @article.present?
+  end
 end
