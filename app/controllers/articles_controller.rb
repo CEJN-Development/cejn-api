@@ -2,8 +2,7 @@
 
 # Controller for CRUD actions on Article class
 class ArticlesController < ApplicationController
-  before_action :set_article, only: %i[update destroy]
-  before_action :find_article, only: %i[show]
+  before_action :set_article, only: %i[show update destroy]
 
   def index
     req = Article.all.select ArticlesRepository::INDEX_FIELDS
@@ -41,7 +40,8 @@ class ArticlesController < ApplicationController
   private
 
   def set_article
-    @article = Article.find_by(slug: params[:slug])
+    @article = Article.find_by(slug: show_params[:slug])
+    head(:not_found) unless @article.present?
   end
 
   def article_params
@@ -54,10 +54,5 @@ class ArticlesController < ApplicationController
 
   def show_params
     params.permit(:slug)
-  end
-
-  def find_article
-    @article = Article.find_by(slug: show_params[:slug])
-    head(:not_found) unless @article.present?
   end
 end
