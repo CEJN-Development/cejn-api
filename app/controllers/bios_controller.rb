@@ -3,6 +3,7 @@ class BiosController < ApplicationController
 
   def index
     @bios = Bio.all
+    render json: @bio, status: :ok
   end
 
   def show
