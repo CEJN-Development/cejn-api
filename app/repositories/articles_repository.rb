@@ -7,6 +7,7 @@ class ArticlesRepository
     sample
     title
     updated_at
+    slug
   ].freeze
 
   INDEX_PARAMS = %i[
@@ -20,6 +21,7 @@ class ArticlesRepository
     id
     title
     updated_at
+    slug
   ].freeze
 
   UPDATE_PARAMS = %i[

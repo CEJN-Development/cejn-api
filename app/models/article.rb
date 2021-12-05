@@ -3,8 +3,13 @@ class Article < ApplicationRecord
   validates :body, presence: true, length: { minimum: 10 }
 
   before_save :truncate_body
+  before_save :set_slug
 
   def truncate_body
     self.sample = "#{body.truncate(600)}..."
+  end
+
+  def set_slug
+    self.slug = title.truncate(50).parameterize
   end
 end

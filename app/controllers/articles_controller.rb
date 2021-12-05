@@ -41,7 +41,7 @@ class ArticlesController < ApplicationController
   private
 
   def set_article
-    @article = Article.where(id: params[:id]).first
+    @article = Article.find_by(slug: params[:slug])
   end
 
   def article_params
@@ -53,11 +53,11 @@ class ArticlesController < ApplicationController
   end
 
   def show_params
-    params.permit(:id)
+    params.permit(:slug)
   end
 
   def find_article
-    @article = Article.find(show_params[:id])
+    @article = Article.find_by(slug: show_params[:slug])
     head(:not_found) unless @article.present?
   end
 end
