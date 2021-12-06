@@ -3,10 +3,11 @@ class BiosController < ApplicationController
 
   def index
     @bios = Bio.all
-    render json: @bio, status: :ok
+    render json: @bios.as_json(only: BiosRepository::INDEX_FIELDS), status: :ok
   end
 
   def show
+    render json: @bio.as_json(only: BiosRepository::SHOW_FIELDS), status: :ok
   end
 
   def create
@@ -34,11 +35,15 @@ class BiosController < ApplicationController
   private
 
   def set_bio
-    @bio = Bio.find_by(slug: params[:slug])
+    @bio = Bio.find_by(slug: show_params[:slug])
     head(:not_found) unless @bio.present?
   end
 
   def bio_params
     params.fetch(:bio, {})
+  end
+
+  def show_params
+    params.permit(:slug)
   end
 end
