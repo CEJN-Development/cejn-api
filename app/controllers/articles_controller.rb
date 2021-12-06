@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Controller for CRUD actions on Article class
+# Controller for organization Articles
 class ArticlesController < ApplicationController
   before_action :set_article, only: %i[show update destroy]
 
