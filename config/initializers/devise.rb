@@ -129,10 +129,10 @@ Devise.setup do |config|
   # config.pepper = 'e1b43dac4866f767e26935f7b05d031b09e9622d79ab4a05fea80ee5da3e50618c5756e7431a9a27538920cfd1e1bb360191dbb2d0672adfc9f7e14545a706aa'
 
   # Send a notification to the original email when the user's email is changed.
-  # config.send_email_changed_notification = false
+  config.send_email_changed_notification = true
 
   # Send a notification email when the user's password is changed.
-  # config.send_password_change_notification = false
+  config.send_password_change_notification = true
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -281,6 +281,9 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
+  config.warden do |manager|
+    manager.failure_app = DeviseCustomFailure
+  end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
@@ -309,15 +312,15 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
 
-  # config.jwt do |jwt|
-  #   jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
-  #   jwt.dispatch_requests = [
-  #     ['POST', '%r{^/login$}']
-  #   ]
-  #   jwt.recovation_requests = [
-  #     ['DELETE', '%r{^/logout$}']
-  #   ]
-  #   jwt.expiration_time = 14.days.to_i
-  #   jwt.aud_header = 'JWT_AUD'
-  # end
+  config.jwt do |jwt|
+    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
+    jwt.dispatch_requests = [
+      ['POST', '%r{^/login$}']
+    ]
+    jwt.revocation_requests = [
+      ['DELETE', '%r{^/logout$}']
+    ]
+    jwt.expiration_time = 14.days.to_i
+    jwt.aud_header = 'JWT_AUD'
+  end
 end
