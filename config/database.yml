@@ -14,9 +14,9 @@ development:
 test:
   <<: *default
   database: cejn_test
-  username: postgres
-  password: postgres
-  host: localhost
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  host: 127.0.0.1
 
 production:
   <<: *default
