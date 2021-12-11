@@ -23,7 +23,7 @@ class SessionsController < Devise::SessionsController
       if last.present?
         last.update_columns({
           browser_data: params[:browser],
-          os_data: params[:os_data],
+          os_data: params[:os],
           remote_ip: params[:ip]
         })
         aud = last.aud

@@ -1,5 +1,21 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: bios
+#
+#  id         :bigint           not null, primary key
+#  blurb      :text
+#  body       :text
+#  name       :string
+#  slug       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_bios_on_slug  (slug)
+#
 # Records of the members of the organization
 class Bio < ApplicationRecord
   validates :name, presence: true

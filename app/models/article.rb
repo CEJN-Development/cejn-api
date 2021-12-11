@@ -1,5 +1,21 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: articles
+#
+#  id         :bigint           not null, primary key
+#  title      :string
+#  body       :text
+#  sample     :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  slug       :string
+#
+# Indexes
+#
+#  index_articles_on_slug  (slug)
+#
 # Articles published by the organization
 class Article < ApplicationRecord
   validates :title, presence: true, length: { maximum: 50 }

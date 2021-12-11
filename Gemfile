@@ -42,9 +42,14 @@ gem 'rack-cors'
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
+
+  # https://github.com/DatabaseCleaner/database_cleaner
   gem 'database_cleaner'
+
+   # https://github.com/rspec/rspec-rails
   gem 'rspec-rails'
   gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
 
 group :development do
@@ -58,6 +63,9 @@ end
 group :test do
   # https://github.com/DatabaseCleaner/database_cleaner
   gem 'database_cleaner-active_record'
+
+  # https://github.com/colszqowka/simplecov
+  gem 'simplecov', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

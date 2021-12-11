@@ -8,11 +8,18 @@ Rails.application.routes.draw do
                registrations: 'sign_up'
              },
              controllers: {
+               confirmations: 'confirmations',
                sessions: 'sessions',
                registrations: 'registrations',
                passwords: 'passwords'
              }
   resources :bios, param: :slug
   resources :articles, param: :slug
+
+  resources :ping, only: [:index] do
+    collection do
+      get :auth
+    end
+  end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

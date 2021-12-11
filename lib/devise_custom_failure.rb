@@ -5,12 +5,12 @@ class DeviseCustomFailure < Devise::FailureApp
     path_params = request.path_parameters
     control = path_params[:controller]
     act = path_params[:action]
-    if controll == 'api/v1/ping' && act == 'index'
+    if control == 'api/v1/ping' && act == 'index'
       classify = control.classify.pluralize
 
       warden_options[:recall] = "#{classify}##{act}"
-      request_headers['auth_failure'] = true
-      request_headers['auth_failure_message'] = i18n_message
+      request.headers['auth_failure'] = true
+      request.headers['auth_failure_message'] = i18n_message
       recall
     else
       http_auth

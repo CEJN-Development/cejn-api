@@ -1,32 +1,18 @@
 # frozen_string_literal: true
 
 class RegistrationsController < Devise::RegistrationsController
-  before_action configure_sign_up_params, only: %i[create]
+  respond_to :json
 
+  # POST /users
+  # Specs No
   def create
-    @user = User.new(sign_up_params)
-    @user.save
-    if @user.persisted?
-      render json: @user, status: :created
+    build_resource(sign_up_params)
+
+    resource.save
+    if resource.persisted?
+      render json: { message: I18n.t('controllers.registrations.confirm') }
     else
-      head(:unprocessable_entity)
+      render json: resource.errors, status: 401
     end
-  end
-
-  protected
-
-  def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: %i[full_name])
-  end
-
-  private
-
-  def sign_up_params
-    params.require(:user).permit(
-      :email,
-      :password,
-      :password_confirmation,
-      :full_name
-    )
   end
 end
