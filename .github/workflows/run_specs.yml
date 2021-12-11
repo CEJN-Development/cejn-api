@@ -5,15 +5,15 @@ env:
   POSTGRES_DB: ${{ secrets.POSTGRES_TEST_DB }}
   DEVISE_JWT_SECRET_KEY: ${{ secrets.DEVISE_JWT_SECRET_KEY }}
 
-name: Rails Spec
-on: [push, pull_request]
+name: Rails Specs
+on: [push,pull_request]
 jobs:
   rspec-test:
     name: RSpec
     runs-on: ubuntu-20.04
     services:
       postgres:
-        image: postgres:lastest
+        image: postgres:latest
         ports:
         - 5432:5432
         env:
