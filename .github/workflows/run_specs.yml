@@ -15,28 +15,28 @@ jobs:
       postgres:
         image: postgres.lastest
         ports:
-          5432:5432
+        - 5432:5432
         env:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
     steps:
-      uses: actions/checkout@v1
-      uses: actions/setup-ruby@v1
+      - uses: actions/checkout@v1
+      - uses: actions/setup-ruby@v1
       with:
         ruby-version: ${{ env.RUBY_VERSION }}
-      name: Install postgres client
+      - name: Install postgres client
       run: sudo apt-get install libpq-dev
-      name: Install dependencies
+      - name: Install dependencies
       run: |
         gem install bundler
         bundler install
-      name: Create database
+      - name: Create database
       run: |
         bundler exec rails db:create RAILS_ENV=test
         bundler exec rails db:migrate RAILS_ENV=test
-      name: Run tests
+      - name: Run tests
       run: bundler exec rspec spec/*
-      name: Upload coverage results
+      - name: Upload coverage results
       uses: actions/upload-artifact@master
       if: always()
       with:
