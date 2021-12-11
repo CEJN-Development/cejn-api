@@ -13,7 +13,7 @@ development:
 
 test:
   <<: *default
-  database: <%= ENV['POSTGRES_TEST_DB'] %>
+  database: cejn_test
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
   host: 127.0.0.1
