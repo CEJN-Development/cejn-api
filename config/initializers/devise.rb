@@ -323,4 +323,8 @@ Devise.setup do |config|
     jwt.expiration_time = 14.days.to_i
     jwt.aud_header = 'JWT_AUD'
   end
+
+  config.jwt_cookie do |jwt_cookie|
+    jwt_cookie.name = 'jwt'
+  end
 end

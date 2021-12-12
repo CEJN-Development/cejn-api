@@ -1,23 +1,11 @@
 module ObjectCreators
   def create_allowlisted_jwts(params = {})
-    user = params[:user].presence || create_user
+    user = params[:user].presence || create(:user)
     user.allowlisted_jwts.create!(
       jti: params['jti'].presence || 'TEST',
       aud: params['aud'].presence || 'TEST',
       exp: Time.at(params['exp'].presence.to_i || Time.now.to_i)
     )
-  end
-
-  def create_user(params = {})
-    last_id = User.limit(1).order(id: :desc).pluck(:id).first || 0
-    user = User.new(
-      email: params[:name].present? ? "#{params[:name]}@test.com" : "testtest#{last_id+1}@test.com",
-      password: 'testtest',
-      password_confirmation: 'testtest'
-    )
-    user.skip_confirmation!
-    user.save!
-    user
   end
 
   # CONVENIENCE methods
@@ -31,11 +19,26 @@ module ObjectCreators
     }
   end
 
+  def get_headers_http_cookie(login)
+    jwt = get_jwt_cookie(login)
+    {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'HTTP_JWT_AUD': 'test',
+      'Authorization': "Bearer #{jwt}"
+    }
+  end
+
   def get_jwt(login)
-    # NOTE: RSPEC sucks (uses HTTP_ because WTF)
-    headers = { 'HTTP_JWT_AUD': 'test' }
-    post '/login', params: { user: { email: login, password: 'testtest' } }, headers: headers
+    headers = { 'HTTP_JWT_AUD': 'test', 'x-HOST_ID': '1' }
+    post '/login', params: { user: { email: login, password: 'password' } }, headers: headers
     JSON.parse(response.body, object_class: OpenStruct).jwt
+  end
+
+  def get_jwt_cookie(login)
+    headers = { 'HTTP_JWT_AUD': 'test' }
+    post '/login', params: { user: { email: login, password: 'password' } }, headers: headers
+    response.cookies['jwt']
   end
 end
 

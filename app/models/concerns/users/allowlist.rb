@@ -23,7 +23,7 @@ module Users::Allowlist
                   .last
     token = allowlisted_jwts.create!(
       jti: payload['jti'],
-      aud: payload['aud'].presence || 'UNKNOWN',
+      aud: payload['aud'].presence,
       exp: Time.at(payload['exp'].to_i)
     )
 

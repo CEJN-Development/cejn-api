@@ -29,6 +29,7 @@ class User < ApplicationRecord
   devise  :confirmable,
           :database_authenticatable,
           :jwt_authenticatable,
+          :jwt_cookie_authenticatable,
           :registerable,
           :recoverable,
           :rememberable,

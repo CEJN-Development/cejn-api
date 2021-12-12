@@ -10,7 +10,7 @@ class SessionsController < Devise::SessionsController
     # end
 
     # Doing this to handle rspec weirdness
-    possible_aud = request.headers['HTTP_JWT_AUD'].presence || request.headers['JWT_AUD'].presence
+    possible_aud = request.headers['HTTP_JWT_AUD'].presence || request.headers['JWT_AUD'].presencep
     self.resource = warden.authenticate!(auth_options)
     sign_in(resource_name, resource)
     if user_signed_in?
@@ -19,7 +19,7 @@ class SessionsController < Devise::SessionsController
       # For the initial login, we need to manually update IP / metadata for jWT here as no hooks
       # And we'll want this data for all subsequent requests
       last = resource.allowlisted_jwts.where(aud: possible_aud).last
-      aud = possible_aud || 'UNKNOWN'
+      aud = possible_aud
       if last.present?
         last.update_columns({
           browser_data: params[:browser],
@@ -56,18 +56,23 @@ class SessionsController < Devise::SessionsController
   def respond_with(resource, opts = {})
     # NOTE: the current_token _showld_ be the last AllowlistedJwt, but it might not
     # be, in case of race conditions and such
-    render json: {
-      user: resource.for_display,
-      jwt: current_token,
-      aud: opts[:aud]
-    }
+    render json: response_json(resource, opts)
   end
 
   def respond_to_on_destroy
-    render json: { message: 'Session signed out' }
+    render json: { message: I18n.t('contollers.sessions.sign_out') }
   end
 
   def sessions_params
     params.permit(:email, :password)
+  end
+
+  def response_json(resource, opts = {})
+    response = { user: resource.for_display }
+    response.merge(aud: opts[:aud], jwt: current_token) if reveal_aud?
+  end
+
+  def reveal_aud?
+    request.headers['x-HOST_ID'].present?
   end
 end

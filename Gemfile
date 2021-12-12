@@ -32,6 +32,7 @@ gem 'devise'
 
 # https://github.com/waiting-for-dev/devise-jwt
 gem 'devise-jwt'
+gem 'devise-jwt-cookie', github: 'davidwparker/devise-jwt-cookie'
 
 # https://github.com/bkeepers/dotenv/
 gem 'dotenv-rails'
@@ -48,6 +49,15 @@ group :development, :test do
 
    # https://github.com/rspec/rspec-rails
   gem 'rspec-rails'
+
+  # https://github.com/pry/pry
+  gem 'pry'
+
+  # https://github.com/thoughtbot/factory_bot_rails
+  gem 'factory_bot_rails'
+
+  gem 'faker'
+  
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
@@ -58,6 +68,9 @@ group :development do
 
   # https://github.com/ctran/annotate_models
   gem 'annotate'
+
+  # https://github.com/ryanb/letter_opener
+  gem 'letter_opener'
 end
 
 group :test do

@@ -42,15 +42,23 @@ class PasswordsController < Devise::PasswordsController
     request.env['warden-jwt_auth.token']
   end
 
-  def respond_with(resource, _opts = {})
-    render json: {
+  def response_json(resource)
+    json = {
       message: 'Authentication success',
-      user: resource.for_display,
-      jwt: current_token
+      user: resource.for_display
     }
+    json.merge(jwt: current_token) if reveal_aud?
+  end
+
+  def respond_with(resource, _opts = {})
+    render json: response_json(resource)
   end
 
   def respond_with_error(resource)
     render json: resource.errors, status: 401
+  end
+
+  def reveal_aud?
+    request.headers['x-HOST_ID'].present?
   end
 end
