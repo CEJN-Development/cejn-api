@@ -30,7 +30,7 @@ module ObjectCreators
   end
 
   def get_jwt(login)
-    headers = { 'HTTP_JWT_AUD': 'test', 'x-HOST_ID': '1' }
+    headers = { 'x-HOST_ID': '1' }
     post '/login', params: { user: { email: login, password: 'password' } }, headers: headers
     JSON.parse(response.body, object_class: OpenStruct).jwt
   end

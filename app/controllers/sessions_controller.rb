@@ -2,15 +2,13 @@ class SessionsController < Devise::SessionsController
   respond_to :json
 
   def create
-    # @user = User.find_by(email: sessions_params[:email])
-    # if @user&.valid_password?(sessions_params[:password])
-    #   render json: @user, status: :created
-    # else
-    #   head(:unauthorized)
-    # end
-
     # Doing this to handle rspec weirdness
-    possible_aud = request.headers['HTTP_JWT_AUD'].presence || request.headers['JWT_AUD'].presencep
+    possible_aud = request.headers['HTTP_JWT_AUD'].presence || request.headers['JWT_AUD'].presence
+    if params[:browser].present?
+      browser, version = params[:browser].split('||')
+      digest = Digest::SHA256.hexdigest("#{params[:os]}||||#{browser}||#{version.to_i}")
+      raise 'Unmatched AUD' if digest != possible_aud
+    end
     self.resource = warden.authenticate!(auth_options)
     sign_in(resource_name, resource)
     if user_signed_in?
@@ -36,15 +34,6 @@ class SessionsController < Devise::SessionsController
     render json: { error: 'Unexpected error' }, status: 500
   end
 
-  # def end
-  #   if authenticate_user.present?
-  #     authenticate_user.first['user_id']
-  #     render json: { message: 'Logout successful' }, status: :ok
-  #   else
-  #     head(:unauthorized)
-  #   end
-  # end
-
   private
 
   def current_token
@@ -63,13 +52,10 @@ class SessionsController < Devise::SessionsController
     render json: { message: I18n.t('contollers.sessions.sign_out') }
   end
 
-  def sessions_params
-    params.permit(:email, :password)
-  end
-
   def response_json(resource, opts = {})
     response = { user: resource.for_display }
-    response.merge(aud: opts[:aud], jwt: current_token) if reveal_aud?
+    response.merge!(aud: opts[:aud], jwt: current_token) if reveal_aud?
+    response.as_json
   end
 
   def reveal_aud?
