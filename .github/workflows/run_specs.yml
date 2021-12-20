@@ -4,6 +4,7 @@ env:
   POSTGRES_PASSWORD: postgres
   POSTGRES_DB: cejn_test
   DEVISE_JWT_SECRET_KEY: ${{ secrets.DEVISE_JWT_SECRET_KEY }}
+  CEJN_CLIENT_URL: ${{ secrets.CEJN_CLIENT_URL }}
 
 name: Rails Specs
 on: [push,pull_request]

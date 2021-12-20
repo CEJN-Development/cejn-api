@@ -16,7 +16,6 @@
 #
 #  index_articles_on_slug  (slug)
 #
-# Articles published by the organization
 class Article < ApplicationRecord
   validates :title, presence: true, length: { maximum: 50 }
   validates :body, presence: true, length: { minimum: 10 }

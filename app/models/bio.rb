@@ -16,7 +16,6 @@
 #
 #  index_bios_on_slug  (slug)
 #
-# Records of the members of the organization
 class Bio < ApplicationRecord
   validates :name, presence: true
   validates :body, presence: true
