@@ -10,7 +10,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   origins = if Rails.env.development?
               [ENV['CEJN_CLIENT_URL'],
-               "#{ENV['ACTION_MAILER_HOST']}/#{ENV['ACTION_MAILER_PORT']}"].freeze
+               "#{ENV['ACTION_MAILER_HOST']}:#{ENV['ACTION_MAILER_PORT']}"].freeze
             else
               [ENV['CEJN_CLIENT_URL']].freeze
             end
