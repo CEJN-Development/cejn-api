@@ -13,8 +13,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
               [ENV['CEJN_CLIENT_URL']].freeze
             end
 
-  puts origins
-
   allow do
     origins origins
     resource  '*',
