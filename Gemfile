@@ -41,6 +41,9 @@ gem 'dotenv-rails'
 # https://github.com/cyu/rack-cors
 gem 'rack-cors'
 
+# https://github.com/cloudinary/cloudinary_gem
+gem 'cloudinary'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
