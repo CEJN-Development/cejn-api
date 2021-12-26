@@ -35,7 +35,7 @@ RSpec.describe Article, type: :model do
 
   it 'slug is updated after save' do
     article.update! title: 'A Fancy New Title'
-    article.slug == 'a-fancy-new-title'
+    expect(article.slug).to eq 'a-fancy-new-title'
   end
 
   it 'sample is body truncated at 600 character count' do
