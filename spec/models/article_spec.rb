@@ -17,5 +17,30 @@
 require 'rails_helper'
 
 RSpec.describe Article, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:article) { create :article }
+
+  it 'is valid with valid attributes' do
+    expect(article).to be_valid
+  end
+
+  it 'is not valid without a title' do
+    article.title = nil
+    expect(article).not_to be_valid
+  end
+
+  it 'is not valid without a body' do
+    article.body = nil
+    expect(article).not_to be_valid
+  end
+
+  it 'slug is updated after save' do
+    article.update! title: 'A Fancy New Title'
+    article.slug == 'a-fancy-new-title'
+  end
+
+  it 'sample is body truncated at 600 character count' do
+    article.update! body: Faker::Lorem.paragraph_by_chars(number: 1000)
+    expect(article.body.length).to eq 1000
+    expect(article.sample.length).to eq 603
+  end
 end

@@ -27,7 +27,7 @@ class Article < ApplicationRecord
   has_many :authors, through: :article_authors
 
   def truncate_body
-    self.sample = body.length <= 600 ? "#{body.truncate(600)}..." : body
+    self.sample = body.length > 600 ? "#{body.truncate(600)}..." : body
   end
 
   def set_slug
