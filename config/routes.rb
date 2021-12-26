@@ -15,6 +15,7 @@ Rails.application.routes.draw do
              }
   resources :bios, param: :slug
   resources :articles, param: :slug
+  resources :writers, param: :slug
 
   resources :ping, only: [:index] do
     collection do
