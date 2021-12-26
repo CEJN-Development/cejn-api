@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_123154) do
+ActiveRecord::Schema.define(version: 2021_12_26_145524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(version: 2021_12_09_123154) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["jti"], name: "index_allowlisted_jwts_on_jti", unique: true
     t.index ["user_id"], name: "index_allowlisted_jwts_on_user_id"
+  end
+
+  create_table "article_authors", force: :cascade do |t|
+    t.integer "author_id", null: false
+    t.integer "article_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id", "article_id"], name: "index_article_authors_on_author_id_and_article_id"
   end
 
   create_table "articles", force: :cascade do |t|
@@ -65,6 +73,16 @@ ActiveRecord::Schema.define(version: 2021_12_09_123154) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "writers", force: :cascade do |t|
+    t.string "full_name", null: false
+    t.string "slug", null: false
+    t.text "byline"
+    t.string "cloudinary_image_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_writers_on_slug"
   end
 
   add_foreign_key "allowlisted_jwts", "users", on_delete: :cascade

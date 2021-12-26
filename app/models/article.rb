@@ -23,6 +23,9 @@ class Article < ApplicationRecord
   before_save :truncate_body
   before_save :set_slug
 
+  has_many :article_authors
+  has_many :authors, through: :article_authors
+
   def truncate_body
     self.sample = "#{body.truncate(600)}..."
   end
