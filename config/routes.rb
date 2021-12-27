@@ -13,14 +13,13 @@ Rails.application.routes.draw do
                registrations: 'registrations',
                passwords: 'passwords'
              }
-  resources :bios, param: :slug
-  resources :articles, param: :slug
-  resources :writers, param: :slug
+  resources :bios, only: %i[show], param: :slug
+  resources :articles, only: %i[index show], param: :slug
+  resources :writers, only: %i[show], param: :slug
 
-  resources :ping, only: [:index] do
-    collection do
-      get :auth
-    end
+  namespace :admin do
+    resources :articles
+    resources :bios
+    resources :writers
   end
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
