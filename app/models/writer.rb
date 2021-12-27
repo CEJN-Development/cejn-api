@@ -22,7 +22,7 @@ class Writer < ApplicationRecord
 
   before_save :set_slug
 
-  has_many :article_authors
+  has_many :article_authors, foreign_key: :author_id
   has_many :articles, through: :article_authors
 
   def set_slug
