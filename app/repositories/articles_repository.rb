@@ -4,6 +4,7 @@ class ArticlesRepository
   INDEX_FIELDS = %i[
     created_at
     id
+    excerpt
     sample
     title
     updated_at
@@ -18,6 +19,7 @@ class ArticlesRepository
   SHOW_FIELDS = %i[
     body
     created_at
+    excerpt
     id
     title
     updated_at
@@ -26,6 +28,7 @@ class ArticlesRepository
 
   UPDATE_PARAMS = %i[
     body
+    excerpt
     title
   ].freeze
 end

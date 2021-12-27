@@ -11,14 +11,16 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  slug       :string
+#  excerpt    :text
 #
 # Indexes
 #
 #  index_articles_on_slug  (slug)
 #
 class Article < ApplicationRecord
-  validates :title, presence: true, length: { maximum: 50 }
+  validates :title, presence: true, length: { maximum: 70 }
   validates :body, presence: true, length: { minimum: 10 }
+  validates :excerpt, presence: true, length: { maximum: 200 }
 
   before_save :truncate_body
   before_save :set_slug

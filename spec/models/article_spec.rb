@@ -11,6 +11,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  slug       :string
+#  excerpt    :text
 #
 # Indexes
 #
@@ -32,6 +33,11 @@ RSpec.describe Article, type: :model do
 
   it 'is not valid without a body' do
     article.body = nil
+    expect(article).not_to be_valid
+  end
+
+  it 'is not valid without an excerpt' do
+    article.excerpt = nil
     expect(article).not_to be_valid
   end
 

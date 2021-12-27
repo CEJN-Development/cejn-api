@@ -1,5 +1,21 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: writers
+#
+#  id                   :bigint           not null, primary key
+#  full_name            :string           not null
+#  slug                 :string           not null
+#  byline               :text
+#  cloudinary_image_url :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#
+# Indexes
+#
+#  index_writers_on_slug  (slug)
+#
 require 'rails_helper'
 
 RSpec.describe Writer, type: :model do
