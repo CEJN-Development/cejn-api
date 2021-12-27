@@ -13,7 +13,7 @@ Rails.application.routes.draw do
                registrations: 'registrations',
                passwords: 'passwords'
              }
-  resources :bios, only: %i[show], param: :slug
+  resources :bios, only: %i[index show], param: :slug
   resources :articles, only: %i[index show], param: :slug
   resources :writers, only: %i[show], param: :slug
 
