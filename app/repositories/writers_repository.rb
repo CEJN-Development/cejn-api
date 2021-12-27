@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BiosRepository
+class WritersRepository
   INDEX_FIELDS = %i[
     byline
     cloudinary_image_url

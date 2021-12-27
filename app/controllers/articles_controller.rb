@@ -10,7 +10,7 @@ class ArticlesController < ApplicationController
     req = req.limit index_params[:limit].to_i if index_params[:limit]
     req = req.offset index_params[:page].to_i if index_params[:page]
     res = req.order created_at: :desc
-    render json: res, status: :ok
+    render json: res.as_json(include: :authors), status: :ok
   end
 
   def show
