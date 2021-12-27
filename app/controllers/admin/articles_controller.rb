@@ -2,7 +2,7 @@
 
 class Admin::ArticlesController < ApplicationController
   before_action :set_article, only: %i[show update destroy]
-  before_action :authenticate_user, only: %i[create update destroy]
+  # before_action :authenticate_user!, only: %i[create update destroy]
 
   def index
     req = Article.all.select ArticlesRepository::INDEX_FIELDS
@@ -19,7 +19,7 @@ class Admin::ArticlesController < ApplicationController
   def create
     @article = Article.new(article_params)
     if @article.save
-      render :show, status: :created, location: @article
+      render json: @article, status: :created
     else
       render json: @article.errors, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class Admin::ArticlesController < ApplicationController
 
   def update
     if @article.update(article_params)
-      render :show, status: :ok, location: @article
+      render json: @article, status: :ok
     else
       render json: @article.errors, status: :unprocessable_entity
     end

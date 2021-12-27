@@ -1,96 +1,119 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "/articles", type: :request do
-  describe "GET /index" do
-    it "renders a successful response" do
-      Article.create! valid_attributes
-      get articles_url, headers: valid_headers, as: :json
+RSpec.describe "/admin/articles", type: :request do
+  let(:json) { JSON.parse(response.body) }
+  let(:valid_params) do
+    {
+      title: Faker::Book.title,
+      body: Faker::Lorem.paragraph(sentence_count: 4, random_sentences_to_add: 4),
+      excerpt: Faker::Lorem.paragraph(sentence_count: 4)
+    }
+  end
+
+  describe 'GET /index' do
+    let!(:articles) { create_list :article, 5 }
+
+    it 'renders a successful response' do
+      get admin_articles_url, as: :json
       expect(response).to be_successful
+      expect(json.length).to eq 5
     end
   end
 
-  describe "GET /show" do
-    it "renders a successful response" do
-      article = Article.create! valid_attributes
-      get article_url(article), as: :json
+  describe 'GET /show' do
+    let!(:article) { create :article }
+
+    it 'renders a successful response' do
+      get admin_article_url(article), as: :json
       expect(response).to be_successful
+      expect(json['id']).to eq article.id
     end
   end
 
-  describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Article" do
-        expect {
-          post articles_url,
-               params: { article: valid_attributes }, headers: valid_headers, as: :json
-        }.to change(Article, :count).by(1)
+  describe 'POST /create' do
+    context 'with valid parameters' do
+      xit 'creates a new Article' do
+        expect do
+          post admin_articles_url,
+               params: { article: valid_params }, as: :json
+        end.to change(Article, :count).by 1
       end
 
-      it "renders a JSON response with the new article" do
-        post articles_url,
-             params: { article: valid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including("application/json"))
+      xit 'renders a JSON response with the new article' do
+        post admin_articles_url, params: { article: valid_params }, as: :json
+        expect(response).to have_http_status :created
+        expect(response.content_type).to match a_string_including('application/json')
+        expect(json['title']).to eq valid_params[:title]
+        expect(json['body']).to eq valid_params[:body]
+        expect(json['excerpt']).to eq valid_params[:excerpt]
+        expect(json['slug']).to eq valid_params[:title].parameterize
       end
     end
 
-    context "with invalid parameters" do
-      it "does not create a new Article" do
-        expect {
-          post articles_url,
-               params: { article: invalid_attributes }, as: :json
-        }.to change(Article, :count).by(0)
+    context 'with invalid parameters' do
+      let!(:invalid_params) { valid_params.merge({ body: nil }) }
+
+      xit 'does not create a new Article' do
+        expect do
+          post admin_articles_url, params: { article: invalid_params }, as: :json
+        end.to change(Article, :count).by(0)
       end
 
-      it "renders a JSON response with errors for the new article" do
-        post articles_url,
-             params: { article: invalid_attributes }, headers: valid_headers, as: :json
+      xit 'renders a JSON response with errors for the new article' do
+        post admin_articles_url, params: { article: invalid_params }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to match a_string_including('application/json')
       end
     end
   end
 
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+  describe 'PATCH /update' do
+    let!(:article) { create :article }
 
-      it "updates the requested article" do
-        article = Article.create! valid_attributes
-        patch article_url(article),
-              params: { article: new_attributes }, headers: valid_headers, as: :json
+    context 'with valid parameters' do
+      let(:new_attributes) do
+        {
+          title: "The Life of #{Faker::Name.name}",
+          body: Faker::Lorem.paragraph(sentence_count: 3, random_sentences_to_add: 5),
+          excerpt: Faker::Lorem.paragraph(sentence_count: 5)
+        }
+      end
+
+      xit 'updates the requested article' do
+        patch admin_article_url(article), params: { article: new_attributes }, as: :json
         article.reload
-        skip("Add assertions for updated state")
+        expect(article.title).to eq new_attributes[:title]
+        expect(article.body).to eq new_attributes[:body]
+        expect(article.excerpt).to eq new_attributes[:excerpt]
       end
 
-      it "renders a JSON response with the article" do
-        article = Article.create! valid_attributes
-        patch article_url(article),
-              params: { article: new_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:ok)
-        expect(response.content_type).to match(a_string_including("application/json"))
+      xit 'renders a JSON response with the article' do
+        patch admin_article_url(article), params: { article: new_attributes }, as: :json
+        expect(response).to have_http_status :ok
+        expect(response.content_type).to match a_string_including('application/json')
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a JSON response with errors for the article" do
-        article = Article.create! valid_attributes
-        patch article_url(article),
-              params: { article: invalid_attributes }, headers: valid_headers, as: :json
+    context 'with invalid parameters' do
+      let!(:invalid_params) { valid_params.merge({ title: nil }) }
+
+      xit 'renders a JSON response with errors for the article' do
+        patch admin_article_url(article), params: { article: invalid_params }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to match a_string_including('application/json')
       end
     end
   end
 
-  describe "DELETE /destroy" do
-    it "destroys the requested article" do
-      article = Article.create! valid_attributes
-      expect {
-        delete article_url(article), headers: valid_headers, as: :json
-      }.to change(Article, :count).by(-1)
+  describe 'DELETE /destroy' do
+    let!(:article) { create :article }
+
+    xit 'destroys the requested article' do
+      expect do
+        delete admin_article_url(article), as: :json
+      end.to change(Article, :count).by(-1)
     end
   end
 end
