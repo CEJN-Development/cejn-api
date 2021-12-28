@@ -2,7 +2,7 @@
 
 class Admin::WritersController < ApplicationController
   before_action :set_writer, only: %i[show update destroy]
-  before_action :authenticate_user, only: %i[create update destroy]
+  before_action :authenticate_user!, only: %i[create update destroy]
 
   def index
     @writers = Writer.all
@@ -15,9 +15,15 @@ class Admin::WritersController < ApplicationController
 
   def create
     @writer = Writer.new(writer_params)
-
     if @writer.save
-      render :show, status: :created, location: @writer
+      if photo_params[:photo].present?
+        photo = Cloudinary::Uploader.upload(
+          photo_params[:photo],
+          { public_id: @writer.slug, folder: 'writers' }
+        )
+        @writer.update(cloudinary_image_url: photo['secure_url'])
+      end
+      render json: @writer, status: :created
     else
       render json: @writer.errors, status: :unprocessable_entity
     end
@@ -25,7 +31,7 @@ class Admin::WritersController < ApplicationController
 
   def update
     if @writer.update(writer_params)
-      render :show, status: :ok, location: @writer
+      render json: @writer, status: :ok
     else
       render json: @writer.errors, status: :unprocessable_entity
     end
@@ -43,7 +49,11 @@ class Admin::WritersController < ApplicationController
   end
 
   def writer_params
-    params.fetch(:writer, {})
+    params.require(:writer).permit WritersRepository::UPDATE_PARAMS
+  end
+
+  def photo_params
+    params.require(:writer).permit(:photo)
   end
 
   def show_params
