@@ -2,6 +2,7 @@
 
 class ArticlesRepository
   INDEX_FIELDS = %i[
+    cloudinary_image_url
     created_at
     id
     excerpt
@@ -18,6 +19,7 @@ class ArticlesRepository
 
   SHOW_FIELDS = %i[
     body
+    cloudinary_image_url
     created_at
     excerpt
     id

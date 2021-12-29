@@ -4,14 +4,15 @@
 #
 # Table name: articles
 #
-#  id         :bigint           not null, primary key
-#  title      :string
-#  body       :text
-#  sample     :text
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  slug       :string
-#  excerpt    :text
+#  id                   :bigint           not null, primary key
+#  title                :string
+#  body                 :text
+#  sample               :text
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  slug                 :string
+#  excerpt              :text
+#  cloudinary_image_url :string
 #
 # Indexes
 #

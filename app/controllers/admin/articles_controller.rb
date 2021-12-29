@@ -19,6 +19,13 @@ class Admin::ArticlesController < ApplicationController
   def create
     @article = Article.new(article_params)
     if @article.save
+      if photo_params[:photo].present?
+        photo = Cloudinary::Uploader.upload(
+          photo_params[:photo],
+          { public_id: @article.slug, folder: 'articles' }
+        )
+        @article.update(cloudinary_image_url: photo['secure_url'])
+      end
       render json: @article, status: :created
     else
       render json: @article.errors, status: :unprocessable_entity
@@ -54,5 +61,9 @@ class Admin::ArticlesController < ApplicationController
 
   def show_params
     params.permit(:id)
+  end
+
+  def photo_params
+    params.require(:article).permit(:photo)
   end
 end
