@@ -13,12 +13,15 @@ class Admin::ArticlesController < ApplicationController
   end
 
   def show
-    render json: @article.as_json(only: ArticlesRepository::SHOW_FIELDS), status: :ok
+    render json: @article.as_json(only: ArticlesRepository::SHOW_FIELDS, include: :authors), status: :ok
   end
 
   def create
     @article = Article.new(article_params)
-    if @article.save
+    if article_authors_params[:author_ids].present? && @article.save
+      article_authors_params[:author_ids].each do |id|
+        @article.authors << Writer.find(id)
+      end
       if photo_params[:photo].present?
         photo = Cloudinary::Uploader.upload(
           photo_params[:photo],
@@ -53,6 +56,10 @@ class Admin::ArticlesController < ApplicationController
 
   def article_params
     params.require(:article).permit ArticlesRepository::UPDATE_PARAMS
+  end
+
+  def article_authors_params
+    params.require(:article).permit ArticlesRepository::ARTICLE_AUTHORS_UPDATE_PARAMS
   end
 
   def index_params

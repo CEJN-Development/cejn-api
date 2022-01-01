@@ -13,7 +13,7 @@ class ArticlesController < ApplicationController
   end
 
   def show
-    render json: @article.as_json(only: ArticlesRepository::SHOW_FIELDS), status: :ok
+    render json: @article.as_json(only: ArticlesRepository::SHOW_FIELDS, include: :authors), status: :ok
   end
 
   private

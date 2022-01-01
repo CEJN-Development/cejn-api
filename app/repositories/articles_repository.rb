@@ -33,4 +33,8 @@ class ArticlesRepository
     excerpt
     title
   ].freeze
+
+  ARTICLE_AUTHORS_UPDATE_PARAMS = [
+    author_ids: []
+  ].freeze
 end
