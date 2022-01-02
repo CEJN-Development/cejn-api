@@ -2,13 +2,14 @@
 #
 # Table name: bios
 #
-#  id         :bigint           not null, primary key
-#  blurb      :text
-#  body       :text
-#  name       :string
-#  slug       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                   :bigint           not null, primary key
+#  blurb                :text
+#  body                 :text
+#  name                 :string
+#  slug                 :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  cloudinary_image_url :string
 #
 # Indexes
 #

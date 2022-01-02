@@ -3,6 +3,7 @@
 class BiosRepository
   INDEX_FIELDS = %i[
     blurb
+    cloudinary_image_url
     created_at
     id
     name
@@ -17,6 +18,7 @@ class BiosRepository
 
   SHOW_FIELDS = %i[
     body
+    cloudinary_image_url
     created_at
     id
     name
