@@ -34,7 +34,7 @@ class ArticlesRepository
     title
   ].freeze
 
-  ARTICLE_AUTHORS_UPDATE_PARAMS = [
+  AUTHORS_PARAMS = [
     author_ids: []
   ].freeze
 end

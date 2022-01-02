@@ -36,4 +36,25 @@ class Article < ApplicationRecord
   def set_slug
     self.slug = title.truncate(50).parameterize
   end
+
+  def update_authors(writer_ids)
+    self.authors = [] if writer_ids.present? && authors.present?
+    authors << Writer.where(id: writer_ids)
+  end
+
+  def upload_photo(photo)
+    return if photo.blank?
+
+    response = Cloudinary::Uploader.upload(photo, upload_photo_options)
+    self.cloudinary_image_url = response['secure_url'] if response['secure_url'].present?
+  end
+
+  private
+
+  def upload_photo_options
+    {
+      folder: 'articles',
+      public_id: slug
+    }
+  end
 end
