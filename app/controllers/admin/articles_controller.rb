@@ -38,7 +38,7 @@ class Admin::ArticlesController < ApplicationController
   end
 
   def destroy
-    @article.destroy
+    head(:ok) if @article.destroy
   end
 
   private

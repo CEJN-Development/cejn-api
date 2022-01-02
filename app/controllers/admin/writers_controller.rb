@@ -10,19 +10,13 @@ class Admin::WritersController < ApplicationController
   end
 
   def show
-    render json: @writer.as_json(only: WritersRepository::SHOW_FIELDS), status: :ok
+    render json: @writer.as_json(only: WritersRepository::SHOW_FIELDS, include: :articles), status: :ok
   end
 
   def create
     @writer = Writer.new(writer_params)
+    @writer.upload_photo photo_params[:photo] if @writer.valid?
     if @writer.save
-      if photo_params[:photo].present?
-        photo = Cloudinary::Uploader.upload(
-          photo_params[:photo],
-          { public_id: @writer.slug, folder: 'writers' }
-        )
-        @writer.update(cloudinary_image_url: photo['secure_url'])
-      end
       render json: @writer, status: :created
     else
       render json: @writer.errors, status: :unprocessable_entity
@@ -30,6 +24,7 @@ class Admin::WritersController < ApplicationController
   end
 
   def update
+    @writer.upload_photo photo_params[:photo]
     if @writer.update(writer_params)
       render json: @writer, status: :ok
     else
@@ -38,13 +33,13 @@ class Admin::WritersController < ApplicationController
   end
 
   def destroy
-    @writer.destroy
+    head(:ok) if @writer.destroy
   end
 
   private
 
   def set_writer
-    @writer = Writer.find_by(slug: show_params[:slug])
+    @writer = Writer.find_by(id: show_params[:id])
     head(:not_found) unless @writer.present?
   end
 
@@ -57,6 +52,6 @@ class Admin::WritersController < ApplicationController
   end
 
   def show_params
-    params.permit(:slug)
+    params.permit(:id)
   end
 end

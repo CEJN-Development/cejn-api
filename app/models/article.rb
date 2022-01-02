@@ -34,7 +34,7 @@ class Article < ApplicationRecord
   end
 
   def set_slug
-    self.slug = title.truncate(50).parameterize
+    self.slug = make_slug
   end
 
   def update_authors(writer_ids)
@@ -54,7 +54,11 @@ class Article < ApplicationRecord
   def upload_photo_options
     {
       folder: 'articles',
-      public_id: slug
+      public_id: make_slug
     }
+  end
+
+  def make_slug
+    title.truncate(50).parameterize
   end
 end
