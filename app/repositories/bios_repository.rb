@@ -18,6 +18,7 @@ class BiosRepository
 
   SHOW_FIELDS = %i[
     body
+    blurb
     cloudinary_image_url
     created_at
     id
@@ -27,6 +28,7 @@ class BiosRepository
   ].freeze
 
   UPDATE_PARAMS = %i[
+    blurb
     body
     name
   ].freeze

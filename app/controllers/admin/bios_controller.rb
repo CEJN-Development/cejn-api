@@ -10,7 +10,7 @@ class Admin::BiosController < ApplicationController
   end
 
   def show
-    render json: @bio.as_json(only: BiosRepository::SHOW_FIELDS, include: :articles), status: :ok
+    render json: @bio.as_json(only: BiosRepository::SHOW_FIELDS), status: :ok
   end
 
   def create
