@@ -19,15 +19,21 @@
 #  index_articles_on_slug  (slug)
 #
 class Article < ApplicationRecord
-  validates :title, presence: true, length: { maximum: 70 }
+  validates :title, presence: true, length: { maximum: 100 }
+  validates :title, uniqueness: true
   validates :body, presence: true, length: { minimum: 10 }
   validates :excerpt, presence: true, length: { maximum: 200 }
 
+  before_save :sanitize_body
   before_save :truncate_body
   before_save :set_slug
 
   has_many :article_authors
   has_many :authors, through: :article_authors
+
+  def sanitize_body
+    self.body = ActionController::Base.helpers.sanitize(body, tags: %w[a], attributes: %w[href])
+  end
 
   def truncate_body
     self.sample = body.length > 600 ? "#{body.truncate(600)}..." : body
@@ -59,6 +65,6 @@ class Article < ApplicationRecord
   end
 
   def make_slug
-    title.truncate(50).parameterize
+    title.parameterize
   end
 end
