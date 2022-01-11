@@ -16,10 +16,12 @@ Rails.application.routes.draw do
   resources :bios, only: %i[index show], param: :slug
   resources :articles, only: %i[index show], param: :slug
   resources :writers, only: %i[show], param: :slug
+  resources :splash_sections, only: %i[index]
 
   namespace :admin do
     resources :articles
     resources :bios
     resources :writers
+    resources :splash_sections
   end
 end

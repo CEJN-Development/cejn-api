@@ -44,14 +44,19 @@ gem 'rack-cors'
 # https://github.com/cloudinary/cloudinary_gem
 gem 'cloudinary'
 
+# https://github.com/ilyakatz/data-migrate
+gem 'data_migrate'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+
+  # https://github.com/teamcapybara/capybara
   gem 'capybara'
 
   # https://github.com/DatabaseCleaner/database_cleaner
   gem 'database_cleaner'
 
-   # https://github.com/rspec/rspec-rails
+  # https://github.com/rspec/rspec-rails
   gem 'rspec-rails'
 
   # https://github.com/pry/pry
@@ -60,8 +65,9 @@ group :development, :test do
   # https://github.com/thoughtbot/factory_bot_rails
   gem 'factory_bot_rails'
 
+  # https://github.com/faker-ruby/faker
   gem 'faker'
-  
+
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
