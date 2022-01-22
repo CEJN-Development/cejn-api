@@ -8,7 +8,6 @@ class ArticlesRepository
     excerpt
     sample
     title
-    updated_at
     slug
   ].freeze
 
@@ -24,7 +23,6 @@ class ArticlesRepository
     excerpt
     id
     title
-    updated_at
     slug
   ].freeze
 

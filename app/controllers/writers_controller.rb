@@ -4,7 +4,7 @@ class WritersController < ApplicationController
   before_action :set_writer, only: %i[show]
 
   def show
-    render json: @writer.as_json(only: WritersRepository::SHOW_FIELDS), status: :ok
+    render json: @writer.as_json(only: WritersRepository::SHOW_FIELDS, include: :articles), status: :ok
   end
 
   private
