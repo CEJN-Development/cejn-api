@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: landing_pages
+#
+#  id         :bigint           not null, primary key
+#  name       :string           not null
+#  slug       :string           not null
+#  preview    :text
+#  body       :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_landing_pages_on_slug  (slug)
+#
 require 'rails_helper'
 
 RSpec.describe LandingPage, type: :model do
