@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BiosRepository
+class OrganizationsRepository
   INDEX_FIELDS = %i[
     blurb
     cloudinary_image_url

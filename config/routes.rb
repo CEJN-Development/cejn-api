@@ -14,7 +14,7 @@ Rails.application.routes.draw do
                registrations: 'registrations',
                passwords: 'passwords'
              }
-  resources :bios, only: %i[index show], param: :slug
+  resources :organizations, only: %i[index show], param: :slug
   resources :articles, only: %i[index show], param: :slug
   resources :writers, only: %i[show], param: :slug
   resources :splash_sections, only: %i[index]
@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :articles
-    resources :bios
+    resources :organizations
     resources :writers
     resources :landing_pages, only: %i[show update], param: :slug
     resources :splash_sections

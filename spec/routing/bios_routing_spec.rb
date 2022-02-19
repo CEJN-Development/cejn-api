@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe BiosController, type: :routing do
+RSpec.describe OrganizationsController, type: :routing do
   describe 'routing' do
-    let(:slug) { 'bio_slug' }
+    let(:slug) { 'organization_slug' }
 
     it 'routes to #index' do
-      expect(get: '/bios').to route_to('bios#index')
+      expect(get: '/organizations').to route_to('organizations#index')
     end
 
     it 'routes to #show' do
-      expect(get: "/bios/#{slug}").to route_to('bios#show', slug: slug)
+      expect(get: "/organizations/#{slug}").to route_to('organizations#show', slug: slug)
     end
   end
 end

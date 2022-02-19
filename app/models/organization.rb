@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: bios
+# Table name: organizations
 #
 #  id                   :bigint           not null, primary key
 #  blurb                :text
@@ -15,9 +15,9 @@
 #
 # Indexes
 #
-#  index_bios_on_slug  (slug)
+#  index_organizations_on_slug  (slug)
 #
-class Bio < ApplicationRecord
+class Organization < ApplicationRecord
   validates :name, presence: true
   validates :body, presence: true
   validates :blurb, presence: true
@@ -39,7 +39,7 @@ class Bio < ApplicationRecord
 
   def upload_photo_options
     {
-      folder: 'bios',
+      folder: 'organizations',
       public_id: make_slug
     }
   end

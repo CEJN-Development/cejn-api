@@ -12,9 +12,9 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/bios", type: :request do
+RSpec.describe "/organizations", type: :request do
   # This should return the minimal set of attributes required to create a valid
-  # Bio. As you add validations to Bio, be sure to
+  # Organization. As you add validations to Organization, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
@@ -26,7 +26,7 @@ RSpec.describe "/bios", type: :request do
 
   # This should return the minimal set of values that should be in the headers
   # in order to pass any filters (e.g. authentication) defined in
-  # BiosController, or in your router and rack
+  # OrganizationsController, or in your router and rack
   # middleware. Be sure to keep this updated too.
   let(:valid_headers) {
     {}
@@ -34,48 +34,48 @@ RSpec.describe "/bios", type: :request do
 
   describe "GET /index" do
     it "renders a successful response" do
-      Bio.create! valid_attributes
-      get bios_url, headers: valid_headers, as: :json
+      Organization.create! valid_attributes
+      get organizations_url, headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
     it "renders a successful response" do
-      bio = Bio.create! valid_attributes
-      get bio_url(bio), as: :json
+      organization = Organization.create! valid_attributes
+      get organization_url(organization), as: :json
       expect(response).to be_successful
     end
   end
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Bio" do
+      it "creates a new Organization" do
         expect {
-          post bios_url,
-               params: { bio: valid_attributes }, headers: valid_headers, as: :json
-        }.to change(Bio, :count).by(1)
+          post organizations_url,
+               params: { organization: valid_attributes }, headers: valid_headers, as: :json
+        }.to change(Organization, :count).by(1)
       end
 
-      it "renders a JSON response with the new bio" do
-        post bios_url,
-             params: { bio: valid_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with the new organization" do
+        post organizations_url,
+             params: { organization: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
 
     context "with invalid parameters" do
-      it "does not create a new Bio" do
+      it "does not create a new Organization" do
         expect {
-          post bios_url,
-               params: { bio: invalid_attributes }, as: :json
-        }.to change(Bio, :count).by(0)
+          post organizations_url,
+               params: { organization: invalid_attributes }, as: :json
+        }.to change(Organization, :count).by(0)
       end
 
-      it "renders a JSON response with errors for the new bio" do
-        post bios_url,
-             params: { bio: invalid_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with errors for the new organization" do
+        post organizations_url,
+             params: { organization: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq("application/json")
       end
@@ -88,28 +88,28 @@ RSpec.describe "/bios", type: :request do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested bio" do
-        bio = Bio.create! valid_attributes
-        patch bio_url(bio),
-              params: { bio: new_attributes }, headers: valid_headers, as: :json
-        bio.reload
+      it "updates the requested organization" do
+        organization = Organization.create! valid_attributes
+        patch organization_url(organization),
+              params: { organization: new_attributes }, headers: valid_headers, as: :json
+        organization.reload
         skip("Add assertions for updated state")
       end
 
-      it "renders a JSON response with the bio" do
-        bio = Bio.create! valid_attributes
-        patch bio_url(bio),
-              params: { bio: new_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with the organization" do
+        organization = Organization.create! valid_attributes
+        patch organization_url(organization),
+              params: { organization: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
 
     context "with invalid parameters" do
-      it "renders a JSON response with errors for the bio" do
-        bio = Bio.create! valid_attributes
-        patch bio_url(bio),
-              params: { bio: invalid_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with errors for the organization" do
+        organization = Organization.create! valid_attributes
+        patch organization_url(organization),
+              params: { organization: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq("application/json")
       end
@@ -117,11 +117,11 @@ RSpec.describe "/bios", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested bio" do
-      bio = Bio.create! valid_attributes
+    it "destroys the requested organization" do
+      organization = Organization.create! valid_attributes
       expect {
-        delete bio_url(bio), headers: valid_headers, as: :json
-      }.to change(Bio, :count).by(-1)
+        delete organization_url(organization), headers: valid_headers, as: :json
+      }.to change(Organization, :count).by(-1)
     end
   end
 end
