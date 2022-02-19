@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_08_193141) do
+ActiveRecord::Schema.define(version: 2022_02_19_123313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,19 @@ ActiveRecord::Schema.define(version: 2022_01_08_193141) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "cloudinary_image_url"
     t.index ["slug"], name: "index_bios_on_slug"
+  end
+
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
+  create_table "landing_pages", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.text "preview"
+    t.text "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_landing_pages_on_slug"
   end
 
   create_table "splash_sections", force: :cascade do |t|

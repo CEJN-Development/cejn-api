@@ -5,7 +5,8 @@ Rails.application.routes.draw do
              path: '',
              path_names: {
                sign_in: 'login',
-               registrations: 'sign_up'
+               registrations: 'sign_up',
+               sign_out: 'logout'
              },
              controllers: {
                confirmations: 'confirmations',
@@ -17,11 +18,13 @@ Rails.application.routes.draw do
   resources :articles, only: %i[index show], param: :slug
   resources :writers, only: %i[show], param: :slug
   resources :splash_sections, only: %i[index]
+  resources :landing_pages, only: %i[show], param: :slug
 
   namespace :admin do
     resources :articles
     resources :bios
     resources :writers
+    resources :landing_pages, only: %i[show update], param: :slug
     resources :splash_sections
   end
 end
