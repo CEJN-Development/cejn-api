@@ -11,7 +11,7 @@ gem "actionpack", ">= 6.1.4.2"
 gem 'pg', '~> 1.1'
 
 # Use Puma as the app server
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 5.6'
 
 # https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
