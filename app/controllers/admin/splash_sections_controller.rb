@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Admin::SplashSectionsControll:error < ApplicationController
+class Admin::SplashSectionsController < ApplicationController
   before_action :authenticate_user!, only: %i[update]
 
   def index
