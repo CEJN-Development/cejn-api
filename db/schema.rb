@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_123154) do
+ActiveRecord::Schema.define(version: 2022_02_19_212807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,14 @@ ActiveRecord::Schema.define(version: 2021_12_09_123154) do
     t.index ["user_id"], name: "index_allowlisted_jwts_on_user_id"
   end
 
+  create_table "article_authors", force: :cascade do |t|
+    t.integer "author_id", null: false
+    t.integer "article_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id", "article_id"], name: "index_article_authors_on_author_id_and_article_id"
+  end
+
   create_table "articles", force: :cascade do |t|
     t.string "title"
     t.text "body"
@@ -37,17 +45,40 @@ ActiveRecord::Schema.define(version: 2021_12_09_123154) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
+    t.text "excerpt"
+    t.string "cloudinary_image_url"
     t.index ["slug"], name: "index_articles_on_slug"
   end
 
-  create_table "bios", force: :cascade do |t|
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
+  create_table "landing_pages", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.text "preview"
+    t.text "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_landing_pages_on_slug"
+  end
+
+  create_table "organizations", force: :cascade do |t|
     t.text "blurb"
     t.text "body"
     t.string "name"
     t.string "slug"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["slug"], name: "index_bios_on_slug"
+    t.string "cloudinary_image_url"
+    t.index ["slug"], name: "index_organizations_on_slug"
+  end
+
+  create_table "splash_sections", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "priority", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -65,6 +96,16 @@ ActiveRecord::Schema.define(version: 2021_12_09_123154) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "writers", force: :cascade do |t|
+    t.string "full_name", null: false
+    t.string "slug", null: false
+    t.text "byline"
+    t.string "cloudinary_image_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_writers_on_slug"
   end
 
   add_foreign_key "allowlisted_jwts", "users", on_delete: :cascade

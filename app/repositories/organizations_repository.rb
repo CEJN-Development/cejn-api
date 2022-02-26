@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-class ArticlesRepository
+class OrganizationsRepository
   INDEX_FIELDS = %i[
+    blurb
     cloudinary_image_url
     created_at
     id
-    excerpt
-    sample
-    title
+    name
+    updated_at
     slug
   ].freeze
 
@@ -18,21 +18,18 @@ class ArticlesRepository
 
   SHOW_FIELDS = %i[
     body
+    blurb
     cloudinary_image_url
     created_at
-    excerpt
     id
-    title
+    name
+    updated_at
     slug
   ].freeze
 
   UPDATE_PARAMS = %i[
+    blurb
     body
-    excerpt
-    title
-  ].freeze
-
-  AUTHORS_PARAMS = [
-    author_ids: []
+    name
   ].freeze
 end
