@@ -1,6 +1,16 @@
 class ApplicationController < ActionController::API
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  def errors_json(record)
+    errors = { messages: [] }
+    record.errors.each do |error|
+      errors[:messages] << error.message
+      errors[error.attribute] = [] unless errors.key? error.attribute
+      errors[error.attribute].push error.type
+    end
+    errors.to_json
+  end
+
   protected
 
   def current_token

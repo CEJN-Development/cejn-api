@@ -13,6 +13,7 @@
 #  slug                 :string
 #  excerpt              :text
 #  cloudinary_image_url :string
+#  caption              :string
 #
 # Indexes
 #

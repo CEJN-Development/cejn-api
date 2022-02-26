@@ -19,7 +19,7 @@ class Admin::OrganizationsController < ApplicationController
     if @organization.save
       render json: @organization, status: :created
     else
-      render json: @organization.errors, status: :unprocessable_entity
+      render json: errors_json(@organization), status: :unprocessable_entity
     end
   end
 
@@ -28,7 +28,7 @@ class Admin::OrganizationsController < ApplicationController
     if @organization.update(organization_params)
       render json: @organization, status: :ok
     else
-      render json: @organization.errors, status: :unprocessable_entity
+      render json: errors_json(@organization), status: :unprocessable_entity
     end
   end
 

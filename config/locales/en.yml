@@ -18,3 +18,12 @@ en:
       confirm: "Please confirm your email address."
     sessions:
       sign_out: "Signed out successfully."
+  activerecord:
+    errors:
+      messages:
+        blank: "%{attribute} must be provided."
+      models:
+        writer:
+          attributes:
+            full_name:
+              blank: "Writer's name must be provided."

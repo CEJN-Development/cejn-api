@@ -19,7 +19,7 @@ class Admin::WritersController < ApplicationController
     if @writer.save
       render json: @writer, status: :created
     else
-      render json: @writer.errors, status: :unprocessable_entity
+      render json: errors_json(@writer), status: :unprocessable_entity
     end
   end
 
@@ -28,7 +28,7 @@ class Admin::WritersController < ApplicationController
     if @writer.update(writer_params)
       render json: @writer, status: :ok
     else
-      render json: @writer.errors, status: :unprocessable_entity
+      render json: errors_json(@writer), status: :unprocessable_entity
     end
   end
 

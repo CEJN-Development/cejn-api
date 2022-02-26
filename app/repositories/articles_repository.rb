@@ -2,6 +2,7 @@
 
 class ArticlesRepository
   INDEX_FIELDS = %i[
+    caption
     cloudinary_image_url
     created_at
     id
@@ -18,6 +19,7 @@ class ArticlesRepository
 
   SHOW_FIELDS = %i[
     body
+    caption
     cloudinary_image_url
     created_at
     excerpt
@@ -28,6 +30,7 @@ class ArticlesRepository
 
   UPDATE_PARAMS = %i[
     body
+    caption
     excerpt
     title
   ].freeze
