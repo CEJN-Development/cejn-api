@@ -4,14 +4,20 @@ class SessionsController < Devise::SessionsController
   def create
     # Doing this to handle rspec weirdness
     possible_aud = request.headers['HTTP_JWT_AUD'].presence || request.headers['JWT_AUD'].presence
+    puts "-----------------------------"
+    puts possible_aud
+    puts "-----------------------------"
     if params[:browser].present?
       browser, version = params[:browser].split('||')
       digest = Digest::SHA256.hexdigest("#{params[:os]}||||#{browser}||#{version.to_i}")
       raise 'Unmatched AUD' if digest != possible_aud
     end
+    puts params[:browser]
     self.resource = warden.authenticate!(auth_options)
     sign_in(resource_name, resource)
     if user_signed_in?
+      puts "-------------------------------------"
+      puts "signed in"
       # TODO: resource.blocked?
       #
       # For the initial login, we need to manually update IP / metadata for jWT here as no hooks
@@ -45,6 +51,7 @@ class SessionsController < Devise::SessionsController
   def respond_with(resource, opts = {})
     # NOTE: the current_token _showld_ be the last AllowlistedJwt, but it might not
     # be, in case of race conditions and such
+    puts current_token
     render json: response_json(resource, opts)
   end
 
