@@ -33,7 +33,7 @@ class Admin::OrganizationsController < ApplicationController
   end
 
   def destroy
-    head(:ok) if @organization.destroy
+    render json: {}, status: :ok if @organization.destroy
   end
 
   private

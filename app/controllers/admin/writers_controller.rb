@@ -33,7 +33,7 @@ class Admin::WritersController < ApplicationController
   end
 
   def destroy
-    head(:ok) if @writer.destroy
+    render json: {}, status: :ok if @writer.destroy
   end
 
   private

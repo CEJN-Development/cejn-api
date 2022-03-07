@@ -38,7 +38,7 @@ class Admin::ArticlesController < ApplicationController
   end
 
   def destroy
-    head(:ok) if @article.destroy
+    render json: {}, status: :ok if @article.destroy
   end
 
   private
