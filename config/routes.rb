@@ -14,11 +14,12 @@ Rails.application.routes.draw do
                registrations: 'registrations',
                passwords: 'passwords'
              }
-  resources :organizations, only: %i[index show], param: :slug
   resources :articles, only: %i[index show], param: :slug
-  resources :writers, only: %i[show], param: :slug
-  resources :splash_sections, only: %i[index]
   resources :landing_pages, only: %i[show], param: :slug
+  resources :organizations, only: %i[index show], param: :slug
+  resources :press_releases, only: %i[index show], param: :slug
+  resources :splash_sections, only: %i[index]
+  resources :writers, only: %i[show], param: :slug
 
   namespace :admin do
     resources :articles
