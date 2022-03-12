@@ -301,7 +301,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  actionpack (>= 6.1.4.2)
+  actionpack (>= 6.1.4.4)
   annotate
   bootsnap (>= 1.4.4)
   byebug
@@ -324,7 +324,7 @@ DEPENDENCIES
   pry
   puma (~> 5.6)
   rack-cors
-  rails (~> 6.1.4, >= 6.1.4.2)
+  rails (~> 6.1.4, >= 6.1.4.4)
   rspec-rails
   selenium-webdriver
   simplecov
