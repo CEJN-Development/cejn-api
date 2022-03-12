@@ -1,0 +1,2 @@
+class PressRelease < ApplicationRecord
+end
