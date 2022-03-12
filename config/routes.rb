@@ -23,9 +23,10 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :articles
-    resources :organizations
-    resources :writers
     resources :landing_pages, only: %i[show update], param: :slug
+    resources :organizations
+    resources :press_releases
     resources :splash_sections
+    resources :writers
   end
 end

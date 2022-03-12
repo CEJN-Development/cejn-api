@@ -23,7 +23,7 @@ class Admin::ArticlesController < ApplicationController
     if @article.save
       render json: @article.as_json(include: :authors), status: :created
     else
-      render json: @article.errors, status: :unprocessable_entity
+      render json: errors_json(@article), status: :unprocessable_entity
     end
   end
 
@@ -33,7 +33,7 @@ class Admin::ArticlesController < ApplicationController
     if @article.update(article_params)
       render json: @article.as_json(include: :authors), status: :ok
     else
-      render json: @article.errors, status: :unprocessable_entity
+      render json: errors_json(@article), status: :unprocessable_entity
     end
   end
 
