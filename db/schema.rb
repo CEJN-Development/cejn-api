@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_20_193142) do
+ActiveRecord::Schema.define(version: 2022_03_12_180347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,16 @@ ActiveRecord::Schema.define(version: 2022_02_20_193142) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "cloudinary_image_url"
     t.index ["slug"], name: "index_organizations_on_slug"
+  end
+
+  create_table "press_releases", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "slug", null: false
+    t.text "body"
+    t.text "summary"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_press_releases_on_slug"
   end
 
   create_table "splash_sections", force: :cascade do |t|
