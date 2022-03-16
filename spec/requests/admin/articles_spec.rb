@@ -81,28 +81,39 @@ RSpec.describe "/admin/articles", type: :request do
         }
       end
 
-      xit 'updates the requested article' do
-        patch admin_article_url(article), params: { article: new_attributes }, as: :json
-        article.reload
-        expect(article.title).to eq new_attributes[:title]
-        expect(article.body).to eq new_attributes[:body]
-        expect(article.excerpt).to eq new_attributes[:excerpt]
-      end
+      context "with authentication" do
+        let!(:user) { create_user }
+        let!(:user_jwt) { get_jwt_cookie(User.last.email) }
+        let(:headers) { headers_with_http_cookie(user_jwt) }
 
-      xit 'renders a JSON response with the article' do
-        patch admin_article_url(article), params: { article: new_attributes }, as: :json
-        expect(response).to have_http_status :ok
-        expect(response.content_type).to match a_string_including('application/json')
-      end
-    end
+        before(:each) do
+          my_cookies = ActionDispatch::Request.new(Rails.application.env_config.deep_dup).cookie_jar
+          my_cookies[:jwt] = user_jwt
+          cookies[:jwt] = my_cookies[:jwt]
+        end
 
-    context 'with invalid parameters' do
-      let!(:invalid_params) { valid_params.merge({ title: nil }) }
+        it 'updates the requested article' do
+          patch admin_article_url(article), params: { article: new_attributes }, headers: headers, as: :json
+          expect(article.reload.title).to eq new_attributes[:title]
+          expect(article.reload.body).to eq new_attributes[:body]
+          expect(article.reload.excerpt).to eq new_attributes[:excerpt]
+        end
 
-      xit 'renders a JSON response with errors for the article' do
-        patch admin_article_url(article), params: { article: invalid_params }, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to match a_string_including('application/json')
+        it 'renders a JSON response with the article' do
+          patch admin_article_url(article), params: { article: new_attributes }, headers: headers, as: :json
+          expect(response).to have_http_status :ok
+          expect(response.content_type).to match a_string_including('application/json')
+        end
+
+        context 'with invalid parameters' do
+          let!(:invalid_params) { valid_params.merge({ title: nil }) }
+
+          it 'renders a JSON response with errors for the article' do
+            patch admin_article_url(article), params: { article: invalid_params }, headers: headers, as: :json
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(response.content_type).to match a_string_including('application/json')
+          end
+        end
       end
     end
   end
