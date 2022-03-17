@@ -86,6 +86,16 @@ RSpec.describe '/admin/articles', type: :request do
           end
         end
       end
+
+      context 'without authentication' do
+        let!(:writer) { create :writer }
+        let(:params) { { article: valid_params, author_ids: [writer.id] } }
+
+        it 'returns authorization error' do
+          post admin_articles_url, params: params, as: :json
+          expect(response).to be_unauthorized
+        end
+      end
     end
   end
 
