@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe "/admin/articles", type: :request do
+RSpec.describe '/admin/articles', type: :request do
   let(:headers) { {} }
   let(:json) { JSON.parse(response.body) }
   let(:valid_params) do
@@ -18,7 +18,7 @@ RSpec.describe "/admin/articles", type: :request do
 
     it 'renders a successful response' do
       get admin_articles_url, as: :json
-      expect(response).to be_successful
+      expect(response).to be_ok
       expect(json.length).to eq 5
     end
   end
@@ -28,7 +28,7 @@ RSpec.describe "/admin/articles", type: :request do
 
     it 'renders a successful response' do
       get admin_article_url(article), as: :json
-      expect(response).to be_successful
+      expect(response).to be_ok
       expect(json['id']).to eq article.id
     end
   end
@@ -47,6 +47,7 @@ RSpec.describe "/admin/articles", type: :request do
 
         context 'with an author' do
           let!(:writer) { create :writer }
+          let(:params) { { article: valid_params, author_ids: [writer.id] } }
 
           before do
             valid_params.merge!({ author_ids: [writer.id] })
@@ -54,7 +55,7 @@ RSpec.describe "/admin/articles", type: :request do
 
           it 'creates a new Article' do
             expect do
-              post admin_articles_url, params: { article: valid_params, author_ids: [writer.id] }, headers: headers, as: :json
+              post admin_articles_url, params: params, headers: headers, as: :json
             end.to change(Article, :count).by 1
           end
 
@@ -100,7 +101,7 @@ RSpec.describe "/admin/articles", type: :request do
         }
       end
 
-      context "with authentication" do
+      context 'with authentication' do
         let!(:headers) { sign_user_in }
 
         it 'updates the requested article' do
@@ -112,7 +113,7 @@ RSpec.describe "/admin/articles", type: :request do
 
         it 'renders a JSON response with the article' do
           patch admin_article_url(article), params: { article: new_attributes }, headers: headers, as: :json
-          expect(response).to have_http_status :ok
+          expect(response).to be_ok
           expect(response.content_type).to match a_string_including('application/json')
         end
 
@@ -130,7 +131,7 @@ RSpec.describe "/admin/articles", type: :request do
       context 'without authentication' do
         it 'returns authorization error' do
           patch admin_article_url(article), params: { article: new_attributes }, headers: headers, as: :json
-          expect(response).to have_http_status :unauthorized
+          expect(response).to be_unauthorized
         end
       end
     end
@@ -139,10 +140,21 @@ RSpec.describe "/admin/articles", type: :request do
   describe 'DELETE /destroy' do
     let!(:article) { create :article }
 
-    xit 'destroys the requested article' do
+    context 'with authentication' do
+      let!(:headers) { sign_user_in }
+
+      it 'destroys the requested article' do
+        expect do
+          delete admin_article_url(article), headers: headers, as: :json
+        end.to change(Article, :count).by(-1)
+      end
+    end
+
+    it 'returns unauthorized response' do
       expect do
-        delete admin_article_url(article), as: :json
-      end.to change(Article, :count).by(-1)
+        delete admin_article_url(article), headers: headers, as: :json
+      end.to change(Article, :count).by(0)
+      expect(response).to be_unauthorized
     end
   end
 end
