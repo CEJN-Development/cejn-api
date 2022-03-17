@@ -51,6 +51,15 @@ module ObjectCreators
       exp: Time.at(params['exp'].presence.to_i || Time.now.to_i)
     )
   end
+
+  def sign_user_in(user = {})
+    authenticated_user = user.presence || create_user
+    user_jwt = get_jwt_cookie(authenticated_user.email)
+    my_cookies = ActionDispatch::Request.new(Rails.application.env_config.deep_dup).cookie_jar
+    my_cookies[:jwt] = user_jwt
+    cookies[:jwt] = my_cookies[:jwt]
+    headers_with_http_cookie(user_jwt)
+  end
 end
 
 RSpec.configure do |config|

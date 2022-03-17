@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe "/admin/articles", type: :request do
+  let(:headers) { {} }
   let(:json) { JSON.parse(response.body) }
   let(:valid_params) do
     {
@@ -34,37 +35,55 @@ RSpec.describe "/admin/articles", type: :request do
 
   describe 'POST /create' do
     context 'with valid parameters' do
-      xit 'creates a new Article' do
-        expect do
-          post admin_articles_url,
-               params: { article: valid_params }, as: :json
-        end.to change(Article, :count).by 1
-      end
+      context 'when authenticated' do
+        let!(:headers) { sign_user_in }
 
-      xit 'renders a JSON response with the new article' do
-        post admin_articles_url, params: { article: valid_params }, as: :json
-        expect(response).to have_http_status :created
-        expect(response.content_type).to match a_string_including('application/json')
-        expect(json['title']).to eq valid_params[:title]
-        expect(json['body']).to eq valid_params[:body]
-        expect(json['excerpt']).to eq valid_params[:excerpt]
-        expect(json['slug']).to eq valid_params[:title].parameterize
-      end
-    end
+        it 'requires an author to create a new Article' do
+          expect do
+            post admin_articles_url, params: { article: valid_params }, headers: headers, as: :json
+          end.to change(Article, :count).by 0
+          expect(json['message']).to eq 'An author is required.'
+        end
 
-    context 'with invalid parameters' do
-      let!(:invalid_params) { valid_params.merge({ body: nil }) }
+        context 'with an author' do
+          let!(:writer) { create :writer }
 
-      xit 'does not create a new Article' do
-        expect do
-          post admin_articles_url, params: { article: invalid_params }, as: :json
-        end.to change(Article, :count).by(0)
-      end
+          before do
+            valid_params.merge!({ author_ids: [writer.id] })
+          end
 
-      xit 'renders a JSON response with errors for the new article' do
-        post admin_articles_url, params: { article: invalid_params }, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to match a_string_including('application/json')
+          it 'creates a new Article' do
+            expect do
+              post admin_articles_url, params: { article: valid_params, author_ids: [writer.id] }, headers: headers, as: :json
+            end.to change(Article, :count).by 1
+          end
+
+          it 'renders a JSON response with the new article' do
+            post admin_articles_url, params: { article: valid_params }, headers: headers, as: :json
+            expect(response).to have_http_status :created
+            expect(response.content_type).to match a_string_including('application/json')
+            expect(json['title']).to eq valid_params[:title]
+            expect(json['body']).to eq valid_params[:body]
+            expect(json['excerpt']).to eq valid_params[:excerpt]
+            expect(json['slug']).to eq valid_params[:title].parameterize
+          end
+
+          context 'with invalid parameters' do
+            let!(:invalid_params) { valid_params.merge({ body: nil }) }
+
+            it 'does not create a new Article' do
+              expect do
+                post admin_articles_url, params: { article: invalid_params }, headers: headers, as: :json
+              end.to change(Article, :count).by(0)
+            end
+
+            it 'renders a JSON response with errors for the new article' do
+              post admin_articles_url, params: { article: invalid_params }, headers: headers, as: :json
+              expect(response).to have_http_status(:unprocessable_entity)
+              expect(response.content_type).to match a_string_including('application/json')
+            end
+          end
+        end
       end
     end
   end
@@ -82,15 +101,7 @@ RSpec.describe "/admin/articles", type: :request do
       end
 
       context "with authentication" do
-        let!(:user) { create_user }
-        let!(:user_jwt) { get_jwt_cookie(User.last.email) }
-        let(:headers) { headers_with_http_cookie(user_jwt) }
-
-        before(:each) do
-          my_cookies = ActionDispatch::Request.new(Rails.application.env_config.deep_dup).cookie_jar
-          my_cookies[:jwt] = user_jwt
-          cookies[:jwt] = my_cookies[:jwt]
-        end
+        let!(:headers) { sign_user_in }
 
         it 'updates the requested article' do
           patch admin_article_url(article), params: { article: new_attributes }, headers: headers, as: :json
@@ -113,6 +124,13 @@ RSpec.describe "/admin/articles", type: :request do
             expect(response).to have_http_status(:unprocessable_entity)
             expect(response.content_type).to match a_string_including('application/json')
           end
+        end
+      end
+
+      context 'without authentication' do
+        it 'returns authorization error' do
+          patch admin_article_url(article), params: { article: new_attributes }, headers: headers, as: :json
+          expect(response).to have_http_status :unauthorized
         end
       end
     end
