@@ -5,12 +5,14 @@ ruby '3.0.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.7'
-gem "actionpack", ">= 6.1.4.7"
+
+# https://github.com/rails/rails/tree/main/actionpack
+gem 'actionpack', '>= 6.1.4.7'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
 
-# Use Puma as the app server
+# https://github.com/puma/puma
 gem 'puma', '~> 5.6'
 
 # https://github.com/rails/jbuilder
@@ -33,6 +35,8 @@ gem 'devise'
 
 # https://github.com/waiting-for-dev/devise-jwt
 gem 'devise-jwt'
+
+# https://github.com/davidwparker/devise-jwt-cookie
 gem 'devise-jwt-cookie', github: 'davidwparker/devise-jwt-cookie'
 
 # https://github.com/bkeepers/dotenv/
@@ -48,6 +52,7 @@ gem 'cloudinary'
 gem 'data_migrate'
 
 group :development, :test do
+  # https://github.com/deivid-rodriguez/byebug
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 
   # https://github.com/teamcapybara/capybara
@@ -68,12 +73,18 @@ group :development, :test do
   # https://github.com/faker-ruby/faker
   gem 'faker'
 
+  # https://github.com/SeleniumHQ/selenium/tree/trunk/rb
   gem 'selenium-webdriver'
+
+  # https://github.com/titusfortner/webdrivers
   gem 'webdrivers'
 end
 
 group :development do
+  # https://github.com/guard/listen
   gem 'listen', '~> 3.3'
+
+  # https://github.com/rails/spring
   gem 'spring'
 
   # https://github.com/ctran/annotate_models

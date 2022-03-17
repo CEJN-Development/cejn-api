@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "LandingPages", type: :request do
+RSpec.describe 'LandingPages', type: :request do
   let(:json) { JSON.parse(response.body) }
 
   describe 'GET /show' do

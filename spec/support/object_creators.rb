@@ -1,4 +1,48 @@
 module ObjectCreators
+  # CONVENIENCE methods
+
+  def create_user(params = {})
+    user = User.new(
+      email: params[:email].presence || "testemail@gmail.com",
+      password: "testtest",
+      password_confirmation: "testtest"
+    )
+    user.skip_confirmation!
+    user.save!
+    user
+  end
+
+  def get_browser
+    'Chrome||89'
+  end
+
+  def get_os
+    'Linux||5.0'
+  end
+
+  def get_aud
+    Digest::SHA256.hexdigest("#{get_os}||||#{get_browser}")
+  end
+
+  def get_jwt_cookie(login)
+    headers = { 'HTTP_JWT_AUD': get_aud }
+    post '/login', params: {
+      user: { email: login, password: 'testtest' },
+      browser: get_browser,
+      os: get_os
+    }, headers: headers
+    response.cookies['jwt']
+  end
+
+  def headers_with_http_cookie(jwt)
+    {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'HTTP_JWT_AUD': get_aud,
+      'Authorization': "Bearer #{jwt}"
+    }
+  end
+
   def create_allowlisted_jwts(params = {})
     user = params[:user].presence || create(:user)
     user.allowlisted_jwts.create!(
@@ -8,37 +52,13 @@ module ObjectCreators
     )
   end
 
-  # CONVENIENCE methods
-  def get_headers(login)
-    jwt = get_jwt(login)
-    {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'HTTP_JWT_AUD': 'test',
-      'Authorization': "Bearer #{jwt}"
-    }
-  end
-
-  def get_headers_http_cookie(login)
-    jwt = get_jwt_cookie(login)
-    {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'HTTP_JWT_AUD': 'test',
-      'Authorization': "Bearer #{jwt}"
-    }
-  end
-
-  def get_jwt(login)
-    headers = { 'x-HOST_ID': '1' }
-    post '/login', params: { user: { email: login, password: 'password' } }, headers: headers
-    JSON.parse(response.body, object_class: OpenStruct).jwt
-  end
-
-  def get_jwt_cookie(login)
-    headers = { 'HTTP_JWT_AUD': 'test' }
-    post '/login', params: { user: { email: login, password: 'password' } }, headers: headers
-    response.cookies['jwt']
+  def sign_user_in(user = {})
+    authenticated_user = user.presence || create_user
+    user_jwt = get_jwt_cookie(authenticated_user.email)
+    my_cookies = ActionDispatch::Request.new(Rails.application.env_config.deep_dup).cookie_jar
+    my_cookies[:jwt] = user_jwt
+    cookies[:jwt] = my_cookies[:jwt]
+    headers_with_http_cookie(user_jwt)
   end
 end
 
