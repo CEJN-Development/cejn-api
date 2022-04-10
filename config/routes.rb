@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   resources :splash_sections, only: %i[index]
   resources :writers, only: %i[show], param: :slug
 
+  get '/timeline', to: 'tweets#timeline'
+
   namespace :admin do
     resources :articles
     resources :landing_pages, only: %i[show update], param: :slug
