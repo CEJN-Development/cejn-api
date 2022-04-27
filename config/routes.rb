@@ -14,7 +14,9 @@ Rails.application.routes.draw do
                registrations: 'registrations',
                passwords: 'passwords'
              }
+
   resources :articles, only: %i[index show], param: :slug
+  resources :events, only: %i[index show], param: :slug
   resources :landing_pages, only: %i[show], param: :slug
   resources :organizations, only: %i[index show], param: :slug
   resources :press_releases, only: %i[index show], param: :slug
