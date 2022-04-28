@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: events
@@ -19,5 +21,29 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:event) { create :event }
+
+  it 'is valid with valid attributes' do
+    expect(event).to be_valid
+  end
+
+  it 'is not valid without a name' do
+    event.name = nil
+    expect(event).not_to be_valid
+  end
+
+  it 'is not valid without a date' do
+    event.name = nil
+    expect(event).not_to be_valid
+  end
+
+  it 'is not valid without a body' do
+    event.body = nil
+    expect(event).not_to be_valid
+  end
+
+  it 'is not valid without a description' do
+    event.description = nil
+    expect(event).not_to be_valid
+  end
 end
