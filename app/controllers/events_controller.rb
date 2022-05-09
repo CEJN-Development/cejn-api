@@ -1,53 +1,30 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: %i[ show update destroy ]
+  before_action :set_event, only: %i[show update destroy]
 
-  # GET /events
-  # GET /events.json
   def index
-    @events = Event.all
+    render json: Event.all.as_json, status: :ok
   end
 
-  # GET /events/1
-  # GET /events/1.json
+  def next
+    render json: Event.where('date >= ?', DateTime.now).order(:date).limit(1).as_json
+  end
+
   def show
-  end
-
-  # POST /events
-  # POST /events.json
-  def create
-    @event = Event.new(event_params)
-
-    if @event.save
-      render :show, status: :created, location: @event
-    else
-      render json: @event.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /events/1
-  # PATCH/PUT /events/1.json
-  def update
-    if @event.update(event_params)
-      render :show, status: :ok, location: @event
-    else
-      render json: @event.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /events/1
-  # DELETE /events/1.json
-  def destroy
-    @event.destroy
+    render json: @event, status: :ok
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def event_params
-      params.fetch(:event, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:slug])
+  end
+
+  def index_params
+    params.permit EventsRepository::INDEX_PARAMS
+  end
+
+  def show_params
+    params.permit(:slug)
+  end
 end

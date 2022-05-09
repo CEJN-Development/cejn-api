@@ -16,7 +16,16 @@ Rails.application.routes.draw do
              }
 
   resources :articles, only: %i[index show], param: :slug
-  resources :events, only: %i[index show], param: :slug
+
+  resources :events, param: :slug do
+    get :index
+    get :show
+
+    collection do
+      get :next
+    end
+  end
+
   resources :landing_pages, only: %i[show], param: :slug
   resources :organizations, only: %i[index show], param: :slug
   resources :press_releases, only: %i[index show], param: :slug
