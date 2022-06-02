@@ -6,7 +6,8 @@ class EventsController < ApplicationController
   end
 
   def next
-    render json: Event.where('date >= ?', DateTime.now).order(:date).limit(1).as_json
+    @event = Event.where('date >= ?', DateTime.now).order(:date).limit(1).first
+    render json: @event
   end
 
   def show
@@ -15,7 +16,6 @@ class EventsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_event
     @event = Event.find(params[:slug])
   end
