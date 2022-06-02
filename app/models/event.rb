@@ -26,9 +26,27 @@ class Event < ApplicationRecord
 
   before_save :set_slug
 
+  def set_slug
+    self.slug = make_slug
+  end
+
+  def upload_photo(photo)
+    return if photo.blank?
+
+    response = Cloudinary::Uploader.upload(photo, upload_photo_options)
+    self.cloudinary_image_url = response['secure_url'] if response['secure_url'].present?
+  end
+
   private
 
-  def set_slug
-    self.slug = name.parameterize
+  def upload_photo_options
+    {
+      folder: 'events',
+      public_id: make_slug
+    }
+  end
+
+  def make_slug
+    full_name.parameterize
   end
 end
