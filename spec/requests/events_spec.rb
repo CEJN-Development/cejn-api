@@ -40,5 +40,17 @@ RSpec.describe '/events', type: :request do
       get next_events_url, as: :json
       expect(json['id']).to eq nearer_upcoming_event.id
     end
+
+    context 'without upcoming events' do
+      before do
+        later_upcoming_event.destroy!
+        nearer_upcoming_event.destroy!
+      end
+
+      it 'renders nothing' do
+        get next_events_url, as: :json
+        expect(json).to be_nil
+      end
+    end
   end
 end
