@@ -14,7 +14,18 @@ Rails.application.routes.draw do
                registrations: 'registrations',
                passwords: 'passwords'
              }
+
   resources :articles, only: %i[index show], param: :slug
+
+  resources :events, param: :slug do
+    get :index
+    get :show
+
+    collection do
+      get :next
+    end
+  end
+
   resources :landing_pages, only: %i[show], param: :slug
   resources :organizations, only: %i[index show], param: :slug
   resources :press_releases, only: %i[index show], param: :slug
@@ -25,6 +36,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :articles
+    resources :events
     resources :landing_pages, only: %i[show update], param: :slug
     resources :organizations
     resources :press_releases
