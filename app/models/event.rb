@@ -20,6 +20,7 @@
 #
 class Event < ApplicationRecord
   validates :body, presence: true
+  validates :date, presence: true
   validates :description, presence: true, length: { maximum: 200 }
   validates :name, presence: true
   validates :name, uniqueness: true
