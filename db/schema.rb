@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_27_162555) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_04_27_162555) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,13 +18,13 @@ ActiveRecord::Schema.define(version: 2022_04_27_162555) do
     t.bigint "user_id", null: false
     t.string "jti", null: false
     t.string "aud", null: false
-    t.datetime "exp", null: false
+    t.datetime "exp", precision: nil, null: false
     t.string "remote_ip"
     t.string "os_data"
     t.string "browser_data"
     t.string "device_data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["jti"], name: "index_allowlisted_jwts_on_jti", unique: true
     t.index ["user_id"], name: "index_allowlisted_jwts_on_user_id"
   end
@@ -33,8 +32,8 @@ ActiveRecord::Schema.define(version: 2022_04_27_162555) do
   create_table "article_authors", force: :cascade do |t|
     t.integer "author_id", null: false
     t.integer "article_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["author_id", "article_id"], name: "index_article_authors_on_author_id_and_article_id"
   end
 
@@ -42,8 +41,8 @@ ActiveRecord::Schema.define(version: 2022_04_27_162555) do
     t.string "title"
     t.text "body"
     t.text "sample"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.text "excerpt"
     t.string "cloudinary_image_url"
@@ -55,14 +54,14 @@ ActiveRecord::Schema.define(version: 2022_04_27_162555) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.datetime "date", null: false
+    t.datetime "date", precision: nil, null: false
     t.string "cloudinary_image_url"
     t.string "name", null: false
     t.string "slug"
     t.text "body"
     t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_events_on_slug"
   end
 
@@ -71,8 +70,8 @@ ActiveRecord::Schema.define(version: 2022_04_27_162555) do
     t.string "slug", null: false
     t.text "preview"
     t.text "body"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_landing_pages_on_slug"
   end
 
@@ -81,8 +80,8 @@ ActiveRecord::Schema.define(version: 2022_04_27_162555) do
     t.text "body"
     t.string "name"
     t.string "slug"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "cloudinary_image_url"
     t.index ["slug"], name: "index_organizations_on_slug"
   end
@@ -92,29 +91,29 @@ ActiveRecord::Schema.define(version: 2022_04_27_162555) do
     t.string "slug", null: false
     t.text "body"
     t.text "summary"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_press_releases_on_slug"
   end
 
   create_table "splash_sections", force: :cascade do |t|
     t.string "name", null: false
     t.integer "priority", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -126,8 +125,8 @@ ActiveRecord::Schema.define(version: 2022_04_27_162555) do
     t.string "slug", null: false
     t.text "byline"
     t.string "cloudinary_image_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_writers_on_slug"
   end
 
