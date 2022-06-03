@@ -33,7 +33,7 @@ RSpec.describe Event, type: :model do
   end
 
   it 'is not valid without a date' do
-    event.name = nil
+    event.date = nil
     expect(event).not_to be_valid
   end
 

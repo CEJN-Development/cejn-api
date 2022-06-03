@@ -47,6 +47,6 @@ class Event < ApplicationRecord
   end
 
   def make_slug
-    full_name.parameterize
+    name.parameterize
   end
 end
