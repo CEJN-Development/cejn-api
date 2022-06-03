@@ -10,7 +10,7 @@ class Admin::EventsController < ApplicationController
   end
 
   def show
-    render json: @event.as_json(only: EventsRepository::SHOW_FIELDS, include: :articles), status: :ok
+    render json: @event.as_json(only: EventsRepository::SHOW_FIELDS), status: :ok
   end
 
   def create

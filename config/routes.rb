@@ -36,6 +36,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :articles
+    resources :events
     resources :landing_pages, only: %i[show update], param: :slug
     resources :organizations
     resources :press_releases
