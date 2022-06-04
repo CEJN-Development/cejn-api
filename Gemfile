@@ -51,6 +51,9 @@ gem 'cloudinary'
 # https://github.com/ilyakatz/data-migrate
 gem 'data_migrate'
 
+# https://github.com/mperham/sidekiq
+gem 'sidekiq'
+
 # https://github.com/sferik/twitter
 gem 'twitter', '~> 7.0'
 
