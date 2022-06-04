@@ -57,6 +57,9 @@ gem 'sidekiq'
 # https://github.com/sferik/twitter
 gem 'twitter', '~> 7.0'
 
+# https://github.com/wildbit/postmark-rails
+gem 'postmark-rails'
+
 group :development, :test do
   # https://github.com/deivid-rodriguez/byebug
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
