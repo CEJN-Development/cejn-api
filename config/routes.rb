@@ -42,5 +42,7 @@ Rails.application.routes.draw do
     resources :press_releases
     resources :splash_sections
     resources :writers
+
+    post 'authorization', to: 'authorizations#authorization'
   end
 end
