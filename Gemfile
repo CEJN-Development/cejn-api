@@ -51,8 +51,14 @@ gem 'cloudinary'
 # https://github.com/ilyakatz/data-migrate
 gem 'data_migrate'
 
+# https://github.com/mperham/sidekiq
+gem 'sidekiq'
+
 # https://github.com/sferik/twitter
 gem 'twitter', '~> 7.0'
+
+# https://github.com/wildbit/postmark-rails
+gem 'postmark-rails'
 
 group :development, :test do
   # https://github.com/deivid-rodriguez/byebug
