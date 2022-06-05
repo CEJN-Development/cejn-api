@@ -44,4 +44,10 @@ class User < ApplicationRecord
       id: id
     }
   end
+
+  protected
+
+  def password_required?
+    confirmed? ? super : false
+  end
 end
