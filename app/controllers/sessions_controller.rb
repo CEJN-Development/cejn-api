@@ -20,17 +20,17 @@ class SessionsController < Devise::SessionsController
       aud = possible_aud
       if last.present?
         last.update_columns({
-          browser_data: params[:browser],
-          os_data: params[:os],
-          remote_ip: params[:ip]
-        })
+                              browser_data: params[:browser],
+                              os_data: params[:os],
+                              remote_ip: params[:ip]
+                            })
         aud = last.aud
       end
       respond_with(resource, { aud: aud })
     else
       render json: resource.errors, status: 401
     end
-  rescue => e
+  rescue StandardError => e
     render json: { error: 'Unexpected error' }, status: 500
   end
 
@@ -49,7 +49,7 @@ class SessionsController < Devise::SessionsController
   end
 
   def respond_to_on_destroy
-    render json: { message: I18n.t('contollers.sessions.sign_out') }
+    render json: { message: I18n.t('controllers.sessions.sign_out') }
   end
 
   def response_json(resource, opts = {})
