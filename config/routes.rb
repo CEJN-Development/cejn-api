@@ -32,6 +32,12 @@ Rails.application.routes.draw do
   resources :splash_sections, only: %i[index]
   resources :writers, only: %i[show], param: :slug
 
+  resources :users, only: %i[] do
+    collection do
+      post :set_password
+    end
+  end
+
   get '/timeline', to: 'tweets#timeline'
 
   namespace :admin do
