@@ -1,0 +1,9 @@
+<p>Welcome <%= @email %>!</p>
+
+<p>A ChicagoEJN.org admin account has been created for you.</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p>
+  <%= link_to "Confirm my account", "#{ENV['CEJN_CLIENT_URL']}/confirmation?confirmation_token=#{@token}&email=#{@email}" %>
+</p>
