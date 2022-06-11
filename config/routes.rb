@@ -47,6 +47,13 @@ Rails.application.routes.draw do
     resources :organizations
     resources :press_releases
     resources :splash_sections
+
+    resources :users, only: %i[index create update destroy] do
+      collection do
+        get :team
+      end
+    end
+
     resources :writers
 
     post 'authorization', to: 'authorizations#authorization'
