@@ -17,7 +17,13 @@ class RegistrationsController < Devise::RegistrationsController
     if resource.persisted?
       render json: { message: I18n.t('controllers.registrations.confirm') }, status: :created
     else
-      render json: resource.errors, status: 401
+      render json: errors_json(resource), status: :unprocessable_entity
     end
+  end
+
+  private
+
+  def sign_up_params
+    params.require(:user).permit %i[email full_name]
   end
 end
