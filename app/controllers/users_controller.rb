@@ -7,14 +7,10 @@ class UsersController < ApplicationController
 
   def set_password
     token = @user.send(:set_reset_password_token)
-    render json: { password_reset_token: token }
+    render json: { reset_password_token: token }, status: :ok
   end
 
   private
-
-  def users_options
-    {}.merge timeline_params
-  end
 
   def find_by_confirmation_params
     @user = User.find_by(confirmation_params)

@@ -17,7 +17,7 @@ class PasswordsController < Devise::PasswordsController
   def update
     self.resource = resource_class.reset_password_by_token(resource_params)
 
-    if resource.errors.any?
+    if resource.errors.none?
       if Devise.sign_in_after_reset_password
         resource.after_database_authentication
         sign_in(resource_params, resource)
