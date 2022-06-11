@@ -16,6 +16,8 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
+#  full_name              :string
+#  short_name             :string
 #
 # Indexes
 #
@@ -37,6 +39,10 @@ class User < ApplicationRecord
           jwt_revocation_strategy: self
 
   has_many :allowlisted_jwts, dependent: :destroy
+
+  validates :email, presence: true, uniqueness: true
+  validates :full_name, presence: true
+  validates :short_name, presence: true
 
   def for_display
     {
