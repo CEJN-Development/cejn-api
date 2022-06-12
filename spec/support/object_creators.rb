@@ -3,9 +3,10 @@ module ObjectCreators
 
   def create_user(params = {})
     user = User.new(
-      email: params[:email].presence || "testemail@gmail.com",
-      password: "testtest",
-      password_confirmation: "testtest"
+      email: params[:email].presence || 'testemail@gmail.com',
+      full_name: Faker::Name.name,
+      password: 'password!1I',
+      password_confirmation: 'password!1I'
     )
     user.skip_confirmation!
     user.save!
@@ -27,7 +28,7 @@ module ObjectCreators
   def get_jwt_cookie(login)
     headers = { 'HTTP_JWT_AUD': get_aud }
     post '/login', params: {
-      user: { email: login, password: 'testtest' },
+      user: { email: login, password: 'password!1I' },
       browser: get_browser,
       os: get_os
     }, headers: headers
@@ -36,8 +37,8 @@ module ObjectCreators
 
   def headers_with_http_cookie(jwt)
     {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
+      "Accept": 'application/json',
+      "Content-Type": 'application/json',
       'HTTP_JWT_AUD': get_aud,
       'Authorization': "Bearer #{jwt}"
     }
