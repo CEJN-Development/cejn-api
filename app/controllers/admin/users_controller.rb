@@ -8,7 +8,7 @@ class Admin::UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      render json: @user, status: :ok
+      render json: @user.as_json(only: UsersRepository::INDEX_FIELDS), status: :ok
     else
       render json: errors_json(@user), status: :unprocessable_entity
     end
@@ -19,7 +19,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def team
-    render json: User.all.as_json, status: :ok
+    render json: User.all.as_json(only: UsersRepository::INDEX_FIELDS), status: :ok
   end
 
   private

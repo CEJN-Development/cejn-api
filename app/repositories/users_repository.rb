@@ -3,8 +3,10 @@
 class UsersRepository
   INDEX_FIELDS = %i[
     email
+    full_name
     created_at
     id
+    short_name
     updated_at
   ].freeze
 
@@ -15,5 +17,7 @@ class UsersRepository
 
   UPDATE_PARAMS = %i[
     email
+    full_name
+    short_name
   ].freeze
 end
