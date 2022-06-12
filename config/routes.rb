@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     resources :press_releases
     resources :splash_sections
 
-    resources :users, only: %i[index create update destroy] do
+    resources :users, only: %i[index show create update destroy] do
       collection do
         get :team
       end

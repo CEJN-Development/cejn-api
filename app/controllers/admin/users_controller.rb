@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Admin::UsersController < ApplicationController
-  before_action :set_user, only: %i[update destroy]
+  before_action :set_user, only: %i[show update destroy]
   before_action :authenticate_user!, only: %i[create update destroy]
 
   respond_to :json
@@ -12,6 +12,10 @@ class Admin::UsersController < ApplicationController
     else
       render json: errors_json(@user), status: :unprocessable_entity
     end
+  end
+
+  def show
+    render json: @user.as_json(only: UsersRepository::INDEX_FIELDS), status: :ok
   end
 
   def destroy
