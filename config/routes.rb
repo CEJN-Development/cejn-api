@@ -32,6 +32,12 @@ Rails.application.routes.draw do
   resources :splash_sections, only: %i[index]
   resources :writers, only: %i[show], param: :slug
 
+  resources :users, only: %i[] do
+    collection do
+      post :set_password
+    end
+  end
+
   get '/timeline', to: 'tweets#timeline'
 
   namespace :admin do
@@ -41,6 +47,13 @@ Rails.application.routes.draw do
     resources :organizations
     resources :press_releases
     resources :splash_sections
+
+    resources :users, only: %i[index show create update destroy] do
+      collection do
+        get :team
+      end
+    end
+
     resources :writers
 
     post 'authorization', to: 'authorizations#authorization'

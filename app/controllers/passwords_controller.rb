@@ -7,7 +7,7 @@ class PasswordsController < Devise::PasswordsController
     else
       self.resource = resource_class.send_reset_password_instructions(resource_params)
       if successfully_sent?(resource)
-        render json: { message: 'Password reset instructions sent.' }
+        render json: { message: 'Password reset instructions sent.' }, status: :ok
       else
         respond_with_error(resource)
       end
@@ -17,7 +17,7 @@ class PasswordsController < Devise::PasswordsController
   def update
     self.resource = resource_class.reset_password_by_token(resource_params)
 
-    if resource.errors.any?
+    if resource.errors.none?
       if Devise.sign_in_after_reset_password
         resource.after_database_authentication
         sign_in(resource_params, resource)

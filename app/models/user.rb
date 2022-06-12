@@ -16,6 +16,8 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
+#  full_name              :string
+#  short_name             :string
 #
 # Indexes
 #
@@ -38,10 +40,19 @@ class User < ApplicationRecord
 
   has_many :allowlisted_jwts, dependent: :destroy
 
+  validates :email, presence: true, uniqueness: true
+  validates :full_name, presence: true
+
   def for_display
     {
       email: email,
       id: id
     }
+  end
+
+  protected
+
+  def password_required?
+    confirmed? ? super : false
   end
 end

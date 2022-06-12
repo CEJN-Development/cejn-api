@@ -13,8 +13,12 @@ class ConfirmationsController < Devise::ConfirmationsController
     end
   end
 
-  # GET /resource/confirmation?confirmation_token=abcdef
+  # GET /resource/confirmation?confirmation_token=abcdef&email=user@domain.com
   def show
+    unless resource_class.find_by(confirmation_params).present?
+      return render json: { message: { invalid: 'Confirmation token is invalid.' } }, status: :unauthorized
+    end
+
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
     yield resource if block_given?
 
@@ -23,5 +27,9 @@ class ConfirmationsController < Devise::ConfirmationsController
     else
       render json: resource.errors, status: 401
     end
+  end
+
+  def confirmation_params
+    params.permit(:email, :confirmation_token)
   end
 end

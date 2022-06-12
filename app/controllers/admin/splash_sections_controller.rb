@@ -3,6 +3,8 @@
 class Admin::SplashSectionsController < ApplicationController
   before_action :authenticate_user!, only: %i[update]
 
+  respond_to :json
+
   def index
     @splash_sections = SplashSection.all
     render json: @splash_sections.as_json(only: SplashSectionsRepository::INDEX_FIELDS), status: :ok

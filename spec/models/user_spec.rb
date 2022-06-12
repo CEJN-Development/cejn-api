@@ -14,6 +14,8 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
+#  full_name              :string
+#  short_name             :string
 #
 # Indexes
 #
