@@ -17,7 +17,7 @@ class EventsController < ApplicationController
   private
 
   def set_event
-    @event = Event.find(params[:slug])
+    @event = Event.find_by(slug: params[:slug])
   end
 
   def index_params
